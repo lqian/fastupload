@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>file upload research</title>
+</head>
+<body>
+	<h3>Fast File Upload</h3>
+	<form action="FileUpload" method="post" enctype="multipart/form-data"
+		target="_hiddenFrame">
+		file 1:<input type="file" name="_file1" id="_file1" size="20" />  <p />
+		file 2:<input type="file" name="_file2" id="_file2" size="20" /> <p />
+		Text: <input type="text" name="_text1.text1" id="_text1" size="20" /> <p />
+		file 3:<input type="file" name="_file3" id="_file3" size="20" /> <p />
+		<input
+			type="submit"/>
+	</form>
+	
+	<h3>Common File Upload</h3>
+	<form action="commonuploader" method="post" enctype="multipart/form-data"
+		target="_hiddenFrame">
+		file 1:<input type="file" name="_file1" id="_file1" size="20" />  <p />
+		file 2:<input type="file" name="_file2" id="_file2" size="20" /> <p />
+		file 3:<input type="file" name="_file3" id="_file3" size="20" /> <p />
+		<input
+			type="submit"/>
+	</form>
+	
+	
+	<h4>application/x-www-form-urlencoded</h4>
+	<form action="FileUpload" method="post" enctype="application/x-www-form-urlencoded" target="_hiddenFrame">
+		<input type="text" name="_text1" size="20" /> <br/>
+		<input type="submit" />
+	</form>
+	
+	<h4>dump request data</h4>
+	<form action="FileDump" method="post" enctype="multipart/form-data"
+		target="_hiddenFrame">
+		file 1:<input type="file" name="_file1" id="_file1" size="20" />  <br />
+		file 2:<input type="file" name="_file2" id="_file2" size="20" /> <br />
+		Text: <input type="text" name="_text1.text1" id="_text1" size="20" /> <br />
+		<input
+			type="submit"/>
+	</form>
+	
+	<iframe name="_hiddenFrame" id="_hiddenFrame" style="display:none"></iframe>
+</body>
+</html>
