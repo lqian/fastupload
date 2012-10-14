@@ -4,7 +4,7 @@
   <groupId>net.sourceforge</groupId>
 	<artifactId>fastupload</artifactId>
 	<packaging>war</packaging>
-	<version>0.3.5-SNAPSHOT</version>
+	<version>0.4.0-SNAPSHOT</version>
 	<url>sourceforge.net/projects/fastupload/</url>
 	<name>fastupload</name>
 	<properties>

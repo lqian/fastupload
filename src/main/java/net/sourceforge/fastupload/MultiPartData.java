@@ -1,3 +1,23 @@
+/*
+ * 
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package net.sourceforge.fastupload;
 
 import java.io.IOException;
@@ -33,6 +53,8 @@ public abstract class MultiPartData {
 	 * the threshold of a {@link MultiPartData} object.
 	 */
 	protected int threshold = 0;
+	
+	
 
 	public MultiPartData(String name) {
 		this.name = name;
@@ -43,9 +65,21 @@ public abstract class MultiPartData {
 		this.charset = charset;
 	}
 
+	/**
+	 * abstract method that write the content of multipart/data into a file.
+	 * @param name
+	 * @return
+	 * @throws IOException
+	 */
 	public abstract boolean toFile(String name) throws IOException;
-
-	public abstract byte[] getContentBuffer();
+	
+	/**
+	 * return the content type of content-header.
+	 * @return String
+	 */
+	public String getContentType() {
+		return this.contentHeaderMap.getContentType();
+	}
 
 	/**
 	 * determine multipart/data is a file
@@ -56,6 +90,16 @@ public abstract class MultiPartData {
 		return this.contentHeaderMap.isFile();
 	}
 
+	
+	/**
+	 * abstract append method that just judge the <em>bytes</em> whether exceeds the <em>threshold</em>.
+	 * Concreted sub-class must implement the IO append perform.
+	 * 
+	 * @param buff
+	 * @param off
+	 * @param len
+	 * @throws IOException
+	 */
 	public void append(byte[] buff, int off, int len) throws IOException {
 		bytes += len;
 		if (threshold > 0 && bytes > threshold)
@@ -71,22 +115,30 @@ public abstract class MultiPartData {
 	}
 
 	/**
+	 * the content length in bytes for current {@MultiPartData } object
 	 * @return the bytes
 	 */
 	public int getBytes() {
 		return bytes;
 	}
 
-	public int getThreshold() {
+	protected int getThreshold() {
 		return threshold;
 	}
 
 	public void setThreshold(int threshold) {
 		this.threshold = threshold;
 	}
+	
 
-	public String getName() {
+	
+	protected String getName() {
 		return this.name;
+	}
+	
+	 
+	public String getFieldName() {
+		return this.contentHeaderMap.getName();
 	}
 
 	public String getFileName() {

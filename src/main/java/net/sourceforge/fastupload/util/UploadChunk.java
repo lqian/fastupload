@@ -1,3 +1,22 @@
+/*
+ * 
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
 package net.sourceforge.fastupload.util;
 
 import java.io.IOException;
@@ -19,10 +38,6 @@ public class UploadChunk {
 
 	private byte[] buffer;
 
-	private byte[] boundary;
-
-	private byte[] subBoundary;
-
 	private ContentHeaderMap contentHeaderMap;
 
 	/*
@@ -34,15 +49,19 @@ public class UploadChunk {
 	 * end position of the boundary found
 	 */
 	private int boundEnd = -1;
+	
+	private BoundayFinder boundayFinder;
+	
+	private BoundayFinder subBoundayFinder;
 
 	public UploadChunk(byte[] buffer, byte[] boundary, int pos) {
-		this.boundary = boundary;
+		this.boundayFinder = new BoundayFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
 	}
 
 	public UploadChunk(byte[] buffer, byte[] boundary, int pos, int length) {
-		this.boundary = boundary;
+		this.boundayFinder = new BoundayFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
 		this.length = length;
@@ -80,9 +99,9 @@ public class UploadChunk {
 	 * @return boolean if found
 	 */
 	public boolean find() {
-		boundStart = BoyerMoore.indexOf(buffer, boundary, pos, length);
+		boundStart = boundayFinder.indexOf(buffer, pos, length);
 		if (boundStart != -1)
-			boundEnd = BoyerMoore.indexOf(buffer, boundary, boundStart + boundary.length, length);
+			boundEnd = boundayFinder.indexOf(buffer,  boundStart + boundayFinder.getBoundaryLength(), length);
 		if (boundEnd != -1) {
 			pos = boundEnd;
 		}
@@ -98,9 +117,9 @@ public class UploadChunk {
 		int s = readContentHeader();
 		if (s == -1)
 			return false;
-		boundStart = BoyerMoore.indexOf(buffer, subBoundary, s, length);
+		boundStart = subBoundayFinder.indexOf(buffer, s, length);
 		if (boundStart != -1)
-			boundEnd = BoyerMoore.indexOf(buffer, subBoundary, boundStart + subBoundary.length, length);
+			boundEnd = subBoundayFinder.indexOf(buffer, boundStart + subBoundayFinder.getBoundaryLength(), length);
 		if (boundEnd != -1) {
 			pos = boundEnd;
 		}
@@ -114,7 +133,7 @@ public class UploadChunk {
 	 */
 	public boolean endSub() {
 		if (boundEnd > 0) {
-			boundEnd = BoyerMoore.indexOf(buffer, boundary, boundEnd, length);
+			boundEnd = boundayFinder.indexOf(buffer, boundEnd, length);
 			if (boundEnd != -1) {
 				pos = boundEnd;
 				return true;
@@ -222,12 +241,13 @@ public class UploadChunk {
 		return -1;
 	}
 
-	public byte[] getSubBoundary() {
-		return subBoundary;
-	}
 
+	/**
+	 * create {@link BoundaryFinder} object for the sub-boundary bytes.
+	 * @param subBoundary
+	 */
 	public void setSubBoundary(byte[] subBoundary) {
-		this.subBoundary = subBoundary;
+		this.subBoundayFinder = new BoundayFinder(subBoundary);
 	}
 
 	public byte[] getBuffer() {

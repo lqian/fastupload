@@ -1,5 +1,45 @@
+
+
+/*
+ * 
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
 package net.sourceforge.fastupload.util;
 
+
+/**
+ * 
+ * The class references the <em>Boyer-Moore string search algorithm</em> in <a
+ * href
+ * ="http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm"
+ * >wiki page</a>. The algorithm was developed by <a
+ * href="http://en.wikipedia.org/wiki/Robert_S._Boyer">Robert S. Boyer</a> and
+ * <a href="http://en.wikipedia.org/wiki/J_Strother_Moore">J Strother Moore</a>
+ * in 1977.
+ * 
+ * The class make a bit enhancement that enable original code searching java
+ * bytes.
+ * 
+ * 
+ * @author linkqian
+ * 
+ */
 public class BoyerMoore {
 
 	/**
