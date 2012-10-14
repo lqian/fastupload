@@ -55,7 +55,7 @@ public class HttpFileUploadParser extends AbstractUploadParser {
 	public List<MultiPartFile> parse() throws IOException {
 		this.parseContentLength();
 		this.parseEnctype();
-		this.uploadParser = new StreamUploadParser(request.getInputStream(), boundary, fileFactory);
+		this.uploadParser = new StreamUploadParser(request.getInputStream(),boundary, fileFactory);
 		return uploadParser.parse();
 	}
 

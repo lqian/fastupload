@@ -1,3 +1,4 @@
+
 /*
  * 
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -18,26 +19,32 @@
 * under the License.
 */
 
-package net.sourceforge.fastupload;
+package net.sourceforge.fastupload.test;
 
-/**
- * 
- * an interface declares methods that create object which is instance of
- * sub-class of {@link MultiPartData}
- * 
- * @author linkqian
- * 
- */
-public interface MultiPartDataFactory extends ParseThreshold {
+import java.io.IOException;
+import java.io.InputStream;
 
-	/**
-	 * 
-	 * @param name
-	 *            , the name for identifying the instance of sub-class of
-	 *            {@link MultiPartData}
-	 * @param cls
-	 *            the class of sub-class of {@link MultiPartData}
-	 * @return an object that is instance of sub-class of {@link MultiPartData}
-	 */
-	public <T extends MultiPartData> T createMultiPartData(Class<? extends MultiPartData> cls);
+import javax.servlet.http.HttpServletRequest;
+
+import net.sourceforge.fastupload.mock.SimpleHttpServletRequestMock;
+
+import org.junit.After;
+import org.junit.Before;
+
+public class UploadParserTest {
+	protected InputStream inputStream;
+	
+	protected HttpServletRequest simpleHttpServletRequestMock;
+	
+	@Before
+	public void setUp() throws IOException {
+		inputStream = UploadParserTest.class.getResourceAsStream("uploading.data");
+		simpleHttpServletRequestMock = new SimpleHttpServletRequestMock(inputStream);
+	}
+	
+	@After
+	public void clearUp() throws IOException {
+		inputStream.close();
+	}
+
 }

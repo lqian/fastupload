@@ -50,22 +50,41 @@ public class UploadChunk {
 	 */
 	private int boundEnd = -1;
 	
-	private BoundayFinder boundayFinder;
+	private BoundaryFinder boundayFinder;
 	
-	private BoundayFinder subBoundayFinder;
+	private BoundaryFinder subBoundayFinder;
+
+	
+	
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos) {
+		super();
+		this.pos = pos;
+		this.buffer = buffer;
+		this.boundayFinder = boundayFinder;
+	}
+	
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos,  int length) {
+		super();
+		this.pos = pos;
+		this.buffer = buffer;
+		this.boundayFinder = boundayFinder;
+		this.length = length;
+	}
 
 	public UploadChunk(byte[] buffer, byte[] boundary, int pos) {
-		this.boundayFinder = new BoundayFinder(boundary);
+		this.boundayFinder = new BoundaryFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
 	}
 
 	public UploadChunk(byte[] buffer, byte[] boundary, int pos, int length) {
-		this.boundayFinder = new BoundayFinder(boundary);
+		this.boundayFinder = new BoundaryFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
 		this.length = length;
 	}
+	
+	
 
 	public void append(byte[] buffer) {
 		this.append(buffer, 0, buffer.length);
@@ -247,7 +266,7 @@ public class UploadChunk {
 	 * @param subBoundary
 	 */
 	public void setSubBoundary(byte[] subBoundary) {
-		this.subBoundayFinder = new BoundayFinder(subBoundary);
+		this.subBoundayFinder = new BoundaryFinder(subBoundary);
 	}
 
 	public byte[] getBuffer() {
@@ -263,12 +282,6 @@ public class UploadChunk {
 				hashMap.put(vals[0].trim(), vals[1].trim().replaceAll("\"", ""));
 		}
 		return hashMap;
-	}
-
-	static public void main(String args[]) {
-		UploadChunk chunk = new UploadChunk(null, null, 0);
-		HashMap<String, String> header = chunk.parseLine("Content-Disposition: form-data; name=\"_file1\"; filename=\"oauthapi key.txt\"");
-		System.out.println(header);
 	}
 
 	/**

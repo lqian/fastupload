@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.fastupload.util.BoundaryFinder;
 import net.sourceforge.fastupload.util.UploadChunk;
 
 
@@ -38,8 +39,6 @@ import net.sourceforge.fastupload.util.UploadChunk;
 public class StreamUploadParser {
 
 	private InputStream inputStream;
-
-	private byte[] boundary;
 
 	private int bufferSize = 0x2000;
 
@@ -54,11 +53,12 @@ public class StreamUploadParser {
 	private List<MultiPartFile> files = new ArrayList<MultiPartFile>();
 	private MultiPartFile multiPartFile;
 	private ContentHeaderMap contentMap;
+	private BoundaryFinder boundaryFinder;
 
 	public StreamUploadParser(InputStream inputStream, byte[] boundary, FileFactory fileFactory) {
 		super();
 		this.inputStream = inputStream;
-		this.boundary = boundary;
+		this.boundaryFinder  = new BoundaryFinder(boundary);
 		this.fileFactory = fileFactory;
 	}
 	
@@ -67,11 +67,11 @@ public class StreamUploadParser {
 		while ((c = inputStream.read(buffer)) != -1) {
 			readBytes += c;
 			if (delta != null) {
-				chunk = new UploadChunk(delta, boundary, 0);
+				chunk = new UploadChunk(delta, boundaryFinder, 0);
 				chunk.append(buffer, 0, c);
 				delta = null;
 			} else {
-				chunk = new UploadChunk(buffer, boundary, 0, c);
+				chunk = new UploadChunk(buffer, boundaryFinder, 0, c);
 			}
 			while (chunk.find()) {
 				chunk.readContentHeader();
@@ -80,7 +80,12 @@ public class StreamUploadParser {
 				if (this.fileFactory.acceptable(contentMap)) {
 					if (contentMap.hasMultiPartMixed()) {
 						this.writeMixedMultiPart();
-					} else {
+					}  else {
+						if (multiPartFile != null && !multiPartFile.closed()){
+							multiPartFile.append(chunk.getBuffer(), 0, chunk.getBoundStart() );
+							multiPartFile.close();
+							files.add(multiPartFile);
+						}
 						this.writeMultiPart();
 					}
 				}

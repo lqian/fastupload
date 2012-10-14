@@ -71,8 +71,6 @@ public class HttpMemoryUploadParser extends AbstractUploadParser {
 		return memoryUploadParser.parseMap();
 	}
 	
-	
-	
 	@Override
 	protected int getParseThreshold() {
 		return multiPartDataFactory.getParseThreshold();

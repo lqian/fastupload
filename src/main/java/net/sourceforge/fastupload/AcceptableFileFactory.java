@@ -17,27 +17,40 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 package net.sourceforge.fastupload;
 
+import java.util.Map;
+
 /**
- * 
- * an interface declares methods that create object which is instance of
- * sub-class of {@link MultiPartData}
+ * a interface defines the function that checks a file name is acceptable by the given regular express pattern.
  * 
  * @author linkqian
- * 
+ *
  */
-public interface MultiPartDataFactory extends ParseThreshold {
+public interface AcceptableFileFactory {
+	
+	 
+	/**
+	 * @return the regular express
+	 */
+	public String getRegex() ; 
 
 	/**
-	 * 
-	 * @param name
-	 *            , the name for identifying the instance of sub-class of
-	 *            {@link MultiPartData}
-	 * @param cls
-	 *            the class of sub-class of {@link MultiPartData}
-	 * @return an object that is instance of sub-class of {@link MultiPartData}
+	 * @param pattern the pattern to set
 	 */
-	public <T extends MultiPartData> T createMultiPartData(Class<? extends MultiPartData> cls);
+	public void setRegex(String regex)  ;
+	
+	/**
+	 * check whether a given {@link ContentHeaderMap} object is acceptable
+	 * @param contentHeaderMap ContentHeaderMap
+	 * @return boolean
+	 */
+	public boolean acceptable(ContentHeaderMap contentHeaderMap) ;
+	
+	/**
+	 * return a map object contains all not-acceptable {@link ContentHeaderMap}, the key is the file name parsed from the {@link ServletRequest} input stream.
+	 * @return
+	 */
+	public Map<String, ContentHeaderMap> getExceptionalMap();
+
 }
