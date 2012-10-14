@@ -111,7 +111,7 @@ public class MemoryUploadParser {
 
 	private void writeData(HashMap<String, MultiPartData> multiparts) throws IOException {
 		MultiPartData mpd = this.doWriteData();
-		multiparts.put(mpd.getName(), mpd);
+		multiparts.put(mpd.getFieldName(), mpd);
 	}
 
 	/**

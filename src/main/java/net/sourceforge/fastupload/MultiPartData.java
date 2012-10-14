@@ -31,8 +31,6 @@ import net.sourceforge.fastupload.exception.ThresholdException;
  */
 public abstract class MultiPartData {
 
-	protected String name;
-
 	/*
 	 * default charset iso-8859-1
 	 */
@@ -55,13 +53,12 @@ public abstract class MultiPartData {
 	protected int threshold = 0;
 	
 	
-
-	public MultiPartData(String name) {
-		this.name = name;
+	public MultiPartData() {
+		
 	}
 
-	public MultiPartData(String name, String charset) {
-		this.name = name;
+	public MultiPartData(String charset) {
+		super();
 		this.charset = charset;
 	}
 
@@ -128,12 +125,6 @@ public abstract class MultiPartData {
 
 	public void setThreshold(int threshold) {
 		this.threshold = threshold;
-	}
-	
-
-	
-	protected String getName() {
-		return this.name;
 	}
 	
 	 

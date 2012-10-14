@@ -29,17 +29,22 @@ import net.sourceforge.fastupload.exception.ThresholdException;
 
 public abstract class MultiPartFile extends MultiPartData {
 
+	/*
+	 * a valid full file name
+	 */
+	protected String name;
 	protected int start;
 	protected int end;
 	protected int bytes = 0;
 	protected boolean closed = false;
 	
 	public MultiPartFile(String name) {
-		super(name);
+		this.name = name;
 	}
 	
 	public MultiPartFile(String name, String charset) {
-		super(name, charset);
+		super(charset);
+		this.name = name;
 	}
 	
 	/**

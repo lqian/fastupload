@@ -32,14 +32,17 @@ import java.io.IOException;
  */
 public class MemoryMultiPartData extends MultiPartData {
 
+	private String fieldName;
+	
 	private byte[] buffer;
 
-	public MemoryMultiPartData(String name) {
-		super(name);
+	public MemoryMultiPartData(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
-	public MemoryMultiPartData(String name, String charset) {
-		super(name, charset);
+	public MemoryMultiPartData(String fieldName, String charset) {
+		super(charset);
+		this.fieldName = fieldName;
 	}
 
 	@Override

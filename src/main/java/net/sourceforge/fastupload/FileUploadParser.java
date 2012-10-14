@@ -207,10 +207,12 @@ public class FileUploadParser {
 	 * @param bound
 	 * @param subBound
 	 */
+	@SuppressWarnings("unused")
 	private void doParseSubBoundary(byte[] buffer, int pos) {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void doParseBoundary(byte[] buffer, int start) {
 		int p=0;
 		do {
