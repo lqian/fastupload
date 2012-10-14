@@ -14,13 +14,7 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0-beta-1</version>
-			</plugin>
-			
-			<!-- jar包插件 -->
+			 <!-- jar packaging plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -43,7 +37,7 @@
 				</executions>
 			</plugin>
 
-			<!-- 指定Java编译器版本 -->
+			<!-- specified the java compile level -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -55,7 +49,7 @@
 
 			</plugin>
 
-			<!-- maven源码打包插件 -->
+			<!-- maven source packaging plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -71,10 +65,11 @@
 		<artifactId>junit</artifactId>
 		<version>4.10</version>
 	</dependency>
+	 
 	<dependency>
 		<groupId>javax.servlet</groupId>
-		<artifactId>javax.servlet-api</artifactId>
-		<version>3.0.1</version>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
 	</dependency>
 	</dependencies>
 </project>
