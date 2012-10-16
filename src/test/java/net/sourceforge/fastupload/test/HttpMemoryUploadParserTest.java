@@ -55,5 +55,17 @@ public class HttpMemoryUploadParserTest extends UploadParserTest {
 		MultiPartData part1 = parts.get(0);
 		assertEquals(part1.isFile(), true);
 	}
+	
+	@Test
+	public void testParseContentType() throws IOException {
+		
+		multiPartDataFactory.setAllowedTypes("image/jpg");
+		multiPartDataFactory.setAllowedExtensions(".jpg");
+		List<MultiPartData> parts = httpMemoryUploadParser.parseList();
+		assertEquals(parts.size(), 1);
+
+		MultiPartData part1 = parts.get(0);
+		assertEquals(part1.isFile(), false);
+	}
 
 }

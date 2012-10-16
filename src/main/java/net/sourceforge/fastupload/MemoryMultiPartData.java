@@ -27,7 +27,7 @@ import java.io.IOException;
  * parse the bytes of multipart data, read those bytes into a buffer, also the
  * {@link StreamMultipartFile} object contains headers of multipart data
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public class MemoryMultiPartData extends MultiPartData {

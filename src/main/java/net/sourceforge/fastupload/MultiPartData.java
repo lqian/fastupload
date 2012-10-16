@@ -25,7 +25,7 @@ import java.io.IOException;
 import net.sourceforge.fastupload.exception.ThresholdException;
 
 /**
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  * 
  */

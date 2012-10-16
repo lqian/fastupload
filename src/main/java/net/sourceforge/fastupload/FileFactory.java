@@ -24,7 +24,7 @@ package net.sourceforge.fastupload;
  * a factory interface that declare method create object which is instance of sub-class of
  * {@link MultiPartFile}
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public interface FileFactory extends ParseThreshold {

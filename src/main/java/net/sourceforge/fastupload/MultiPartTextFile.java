@@ -27,6 +27,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+/**
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class MultiPartTextFile extends MultiPartDiskFile {
 
 	private Writer writer;

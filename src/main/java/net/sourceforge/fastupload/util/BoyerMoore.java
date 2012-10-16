@@ -37,8 +37,9 @@ package net.sourceforge.fastupload.util;
  * bytes.
  * 
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
+ * @deprecated
  */
 public class BoyerMoore {
 

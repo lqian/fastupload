@@ -20,7 +20,7 @@
 package net.sourceforge.fastupload;
 
 /**
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  *
  */
 public abstract class AbstractParseThresholdFactory {

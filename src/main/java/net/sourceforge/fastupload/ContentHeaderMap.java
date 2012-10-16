@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 /**
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public class ContentHeaderMap extends HashMap<String, String> {

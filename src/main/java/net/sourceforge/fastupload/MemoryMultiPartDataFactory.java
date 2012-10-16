@@ -24,7 +24,7 @@ import java.lang.reflect.Constructor;
 
 /**
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public class MemoryMultiPartDataFactory extends AbstractFactory implements MultiPartDataFactory {

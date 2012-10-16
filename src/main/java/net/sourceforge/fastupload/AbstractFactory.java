@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public abstract class AbstractFactory extends AbstractParseThresholdFactory implements AcceptableFileFactory, ParseThreshold {
@@ -52,7 +52,7 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 		if (allowedExtensions == null && allowedTypes == null)
 			return true;
 
-		if (allowedTypesSet != null) {
+		if (allowedTypesSet != null && contentHeaderMap.getContentType()!=null) {
 			if (allowedTypesSet.contains(contentHeaderMap.getContentType())) {
 				return true;
 			} else {

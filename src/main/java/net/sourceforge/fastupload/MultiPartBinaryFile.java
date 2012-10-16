@@ -23,6 +23,11 @@ package net.sourceforge.fastupload;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class MultiPartBinaryFile extends MultiPartDiskFile {
 	private FileOutputStream fos;
 	

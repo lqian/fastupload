@@ -23,6 +23,11 @@ package net.sourceforge.fastupload;
 
 import java.io.File;
 
+/**
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public abstract class MultiPartDiskFile extends MultiPartFile {
 
 

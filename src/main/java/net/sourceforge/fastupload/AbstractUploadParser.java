@@ -26,6 +26,11 @@ import net.sourceforge.fastupload.exception.FileUploadParserException;
 import net.sourceforge.fastupload.exception.ThresholdException;
 
 
+/**
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public abstract class AbstractUploadParser {
 
 	

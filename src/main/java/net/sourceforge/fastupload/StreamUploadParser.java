@@ -33,7 +33,7 @@ import net.sourceforge.fastupload.util.UploadChunk;
 
 /**
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  *
  */
 public class StreamUploadParser {

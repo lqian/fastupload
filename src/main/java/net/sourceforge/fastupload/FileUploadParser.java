@@ -34,7 +34,7 @@ import net.sourceforge.fastupload.util.BoyerMoore;
  * @deprecated since V0.23
  * 
  * 
- * @author linkqian
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  *
  */
 

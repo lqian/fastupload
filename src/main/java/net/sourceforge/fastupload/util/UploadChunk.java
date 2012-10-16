@@ -25,6 +25,11 @@ import java.util.HashMap;
 
 import net.sourceforge.fastupload.ContentHeaderMap;
 
+/**
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class UploadChunk {
 
 	public static final byte[] _CRLF = { 0X0D, 0X0A };

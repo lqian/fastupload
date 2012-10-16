@@ -23,6 +23,11 @@ package net.sourceforge.fastupload;
 
 import java.lang.reflect.Constructor;
 
+/**
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class DiskFileFactory extends AbstractFactory implements FileFactory, AcceptableFileFactory, ParseThreshold {
 
 	private String path;

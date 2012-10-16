@@ -29,7 +29,9 @@ import java.util.Map;
  * <li>allowedExtension(optional) accept the boundary by the allowed the file extension name, if not set, accept all boundaries</li>
  * </ul>
  * 
- * @author linkqian
+ * The class {@link DiskFileFactory} and {@link MemoryMultiPartDataFactory} implements the interface.
+ * 
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  *
  */
 public interface AcceptableFileFactory {
