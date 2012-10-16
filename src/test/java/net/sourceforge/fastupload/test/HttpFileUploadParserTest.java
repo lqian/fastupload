@@ -57,5 +57,15 @@ public class HttpFileUploadParserTest extends UploadParserTest {
 		MultiPartFile file1 = files.get(0);
 		assertEquals(file1.isFile(), true);
 	}
+	
+	@Test
+	public void testAcceptableParse() throws IOException {
+		diskFileFactory.setAllowedExtensions(".jpg");
+		List<MultiPartFile> files = httpFileUploadParser.parse();
+
+		assertEquals(files.size(), 0);
+		assertEquals(diskFileFactory.getExceptionalMap().keySet().size(), 2);
+		 
+	}
 
 }

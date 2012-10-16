@@ -70,7 +70,7 @@ public class MemoryMultiPartData extends MultiPartData {
 	/**
 	 * return the buffer that contains whole content of a uploading-file
 	 * represented by current {@MemoryMultiPartData}
-	 * object
+	 * object, the method do not convert encoding.
 	 * 
 	 * @return byte[], bytes in the buffer
 	 */

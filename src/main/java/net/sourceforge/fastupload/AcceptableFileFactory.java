@@ -22,23 +22,30 @@ package net.sourceforge.fastupload;
 import java.util.Map;
 
 /**
- * a interface defines the function that checks a file name is acceptable by the given regular express pattern.
+ * a interface defines the function that checks a file name or content-type is acceptable by the given regular express pattern.
+ * the factory support two types of filter rule.
+ * <ul>
+ * <li>allowedTypes(optional)   accept the boundary by the allowed content-type, if not set, accept all boundaries</li>
+ * <li>allowedExtension(optional) accept the boundary by the allowed the file extension name, if not set, accept all boundaries</li>
+ * </ul>
  * 
  * @author linkqian
  *
  */
 public interface AcceptableFileFactory {
 	
-	 
+	
 	/**
-	 * @return the regular express
+	 * comma splitting, for example, <pre>image/jpg, image/png</pre>
+	 * @return
 	 */
-	public String getRegex() ; 
+	public void setAllowedTypes(String allowedTypes);
 
 	/**
-	 * @param pattern the pattern to set
+	 * comma splitting, for examples, <pre>.jpg, .png, .zip</pre>
+	 * @param allowedExtensions
 	 */
-	public void setRegex(String regex)  ;
+	public void setAllowedExtensions(String allowedExtensions);
 	
 	/**
 	 * check whether a given {@link ContentHeaderMap} object is acceptable
@@ -52,5 +59,10 @@ public interface AcceptableFileFactory {
 	 * @return
 	 */
 	public Map<String, ContentHeaderMap> getExceptionalMap();
+	
+	public String getAllowedTypes();
+	
+	public String getAllowedExtensions() ; 
+	
 
 }

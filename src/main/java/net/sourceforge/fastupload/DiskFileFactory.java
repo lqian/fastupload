@@ -105,6 +105,10 @@ public class DiskFileFactory extends AbstractFactory implements FileFactory, Acc
 		return threshold;
 	}
 
+	
+
+	
+
 	//@SuppressWarnings("unchecked")
 	//@Override
 	//public <T extends MultiPartData> T createMulitPartFile(String name, Class<? extends MultiPartData> cls) {
