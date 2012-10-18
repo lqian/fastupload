@@ -50,9 +50,9 @@ public class MemoryMultiPartDataFactory extends AbstractFactory implements Multi
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends MultiPartData> T createMultiPartData(Class<? extends MultiPartData> cls) {
+	public <T extends MultiPartData> T createMultiPartData(String name, Class<? extends MultiPartData> cls) {
 		try {
-			MultiPartData instance = charset == null ? doCreate(cls) : doCreate(charset, cls);
+			MultiPartData instance = charset == null ? doCreate(name, cls) : doCreate(name, charset, cls);
 			instance.setThreshold(threshold);
 			return (T) instance;
 		} catch (Exception e) {
@@ -71,10 +71,10 @@ public class MemoryMultiPartDataFactory extends AbstractFactory implements Multi
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T extends MultiPartData> T doCreate(Class<? extends MultiPartData> cls) throws Exception {
+	protected <T extends MultiPartData> T doCreate(String name, Class<? extends MultiPartData> cls) throws Exception {
 		MultiPartData mpd = null;
-		Constructor<? extends MultiPartData> constructor = cls.getConstructor();
-		mpd = constructor.newInstance();
+		Constructor<? extends MultiPartData> constructor = cls.getConstructor(String.class);
+		mpd = constructor.newInstance(name);
 		return (T) mpd;
 	}
 
@@ -89,14 +89,14 @@ public class MemoryMultiPartDataFactory extends AbstractFactory implements Multi
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T extends MultiPartData> T doCreate( String charset, Class<? extends MultiPartData> cls)
+	protected <T extends MultiPartData> T doCreate(String name, String charset, Class<? extends MultiPartData> cls)
 			throws Exception {
 		MultiPartData mpd = null;
-		Constructor<? extends MultiPartData> constructor = cls.getConstructor(String.class);
+		Constructor<? extends MultiPartData> constructor = cls.getConstructor(String.class, String.class);
 
 		// convert the charset specified
 		//name = new String(name.getBytes(), charset);
-		mpd = constructor.newInstance(charset);
+		mpd = constructor.newInstance(name, charset);
 		return (T) mpd;
 	}
 }

@@ -39,5 +39,5 @@ public interface MultiPartDataFactory extends ParseThreshold {
 	 *            the class of sub-class of {@link MultiPartData}
 	 * @return an object that is instance of sub-class of {@link MultiPartData}
 	 */
-	public <T extends MultiPartData> T createMultiPartData(Class<? extends MultiPartData> cls);
+	public <T extends MultiPartData> T createMultiPartData(String name, Class<? extends MultiPartData> cls);
 }
