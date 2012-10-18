@@ -56,7 +56,7 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 			if (allowedTypesSet.contains(contentHeaderMap.getContentType())) {
 				return true;
 			} else {
-				exceptionalMap.put(contentHeaderMap.getContentType(), contentHeaderMap);
+				exceptionalMap.put(contentHeaderMap.getName(), contentHeaderMap);
 				return false;
 			}
 		}
