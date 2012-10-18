@@ -1,22 +1,22 @@
 /*
  * 
-* Licensed to the Apache Software Foundation (ASF) under one
-* or more contributor license agreements.  See the NOTICE file
-* distributed with this work for additional information
-* regarding copyright ownership.  The ASF licenses this file
-* to you under the Apache License, Version 2.0 (the
-* "License"); you may not use this file except in compliance
-* with the License.  You may obtain a copy of the License at
-*
-*  http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied.  See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 package net.sourceforge.fastupload;
 
@@ -31,6 +31,7 @@ import net.sourceforge.fastupload.exception.ThresholdException;
  */
 public abstract class MultiPartData {
 
+	private String name;
 	/*
 	 * default charset iso-8859-1
 	 */
@@ -52,26 +53,29 @@ public abstract class MultiPartData {
 	 */
 	protected int threshold = 0;
 	
-	
-	public MultiPartData() {
-		
+	public MultiPartData(String name) {
+		super();
+		this.name = name;
 	}
 
-	public MultiPartData(String charset) {
+	public MultiPartData(String name, String charset) {
 		super();
+		this.name = name;
 		this.charset = charset;
 	}
 
 	/**
 	 * abstract method that write the content of multipart/data into a file.
+	 * 
 	 * @param name
 	 * @return
 	 * @throws IOException
 	 */
 	public abstract boolean toFile(String name) throws IOException;
-	
+
 	/**
 	 * return the content type of content-header.
+	 * 
 	 * @return String
 	 */
 	public String getContentType() {
@@ -87,10 +91,10 @@ public abstract class MultiPartData {
 		return this.contentHeaderMap.isFile();
 	}
 
-	
 	/**
-	 * abstract append method that just judge the <em>bytes</em> whether exceeds the <em>threshold</em>.
-	 * Concreted sub-class must implement the IO append perform.
+	 * abstract append method that just judge the <em>bytes</em> whether exceeds
+	 * the <em>threshold</em>. Concreted sub-class must implement the IO append
+	 * perform.
 	 * 
 	 * @param buff
 	 * @param off
@@ -112,7 +116,9 @@ public abstract class MultiPartData {
 	}
 
 	/**
-	 * the content length in bytes for current {@MultiPartData } object
+	 * the content length in bytes for current {@MultiPartData }
+	 * object
+	 * 
 	 * @return the bytes
 	 */
 	public int getBytes() {
@@ -126,14 +132,31 @@ public abstract class MultiPartData {
 	public void setThreshold(int threshold) {
 		this.threshold = threshold;
 	}
-	
-	 
+
 	public String getFieldName() {
 		return this.contentHeaderMap.getName();
 	}
 
 	public String getFileName() {
 		return this.contentHeaderMap.getFileName();
+	}
+
+	/**
+	 * @deprecated
+	 * 
+	 * @return the name, is the full name of file system if in direct writing
+	 *         disk model, else is the name regarding the form input name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	protected void setName(String name) {
+		this.name = name;
 	}
 
 }

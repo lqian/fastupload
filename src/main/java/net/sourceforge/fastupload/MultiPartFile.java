@@ -44,12 +44,11 @@ public abstract class MultiPartFile extends MultiPartData {
 	protected boolean closed = false;
 	
 	public MultiPartFile(String name) {
-		this.name = name;
+		super(name);
 	}
 	
 	public MultiPartFile(String name, String charset) {
-		super(charset);
-		this.name = name;
+		 super(name, charset);
 	}
 	
 	/**
@@ -120,8 +119,4 @@ public abstract class MultiPartFile extends MultiPartData {
 	public boolean isFile() {
 		return true;
 	}
-
-	
-	
-	
 }

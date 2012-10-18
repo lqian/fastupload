@@ -28,6 +28,75 @@ import javax.servlet.http.HttpServletRequest;
  * the class provides the high level API that parse uploading file of
  * multipart/form-data in {@link HttpServletRequest} input stream.
  * 
+ * the main function
+ * 
+ * <pre>
+ * List &lt; MultiPartFile &gt; HttpFileUploadParser.parse()
+ * </pre>
+ * 
+ * , read a part of data of {@link ServletInputStream} into constant size
+ * buffer. write those data into a file directly if found uploading-boundary.
+ * the usage of the class is here.
+ * 
+ * <pre>
+ * 
+ * 
+ * DiskFileFactory dff = new DiskFileFactory(System.getProperty(&quot;user.home&quot;));
+ * dff.setParseThreshold(0x100000);
+ * 
+ * HttpFileUploadParser parser = new HttpFileUploadParser(req, dff);
+ * List&lt;MultiPartFile&gt; files = parser.parse();
+ * 
+ * </pre>
+ * 
+ * optional {@link DiskFileFactory} provides a several features. specify a
+ * charset,
+ * 
+ * <pre>
+ * DiskFileFactory dff = new DiskFileFactory(System.getProperty(&quot;user.home&quot;), &quot;utf-8&quot;);
+ * </pre>
+ * 
+ * {@link HttpFileUploadParser} converts file name with utf-8 charset, also
+ * convert the content with utf-8 charset if found the form-based uploading file
+ * is text format.
+ * 
+ * 
+ * <pre>
+ * DiskFileFactory dff = new DiskFileFactory(System.getProperty(&quot;user.home&quot;), &quot;utf-8&quot;, 0x20000);
+ * </pre>
+ * 
+ * the code indicates the max size is 0x20000 per file.
+ * 
+ * <pre>
+ * dff.setParseThreshold(0x100000);
+ * </pre>
+ * 
+ * the code indicates the max content-length of whole requesting.
+ * 
+ * fastupload provides an advanced mechanism that filters uploading files. It
+ * does not like others form-based uploading component or framework filter
+ * feature. It filter off a boundary if found the boundary's content header
+ * doesn't match the rules.
+ * 
+ * <pre>
+ * dff.setAllowedExtensions(&quot;.jpg, .png&quot;);
+ * </pre>
+ * 
+ * comma splitting. the code indicates {@link HttpFileUploadParser} accept two
+ * types file. JPG and PNG.
+ * 
+ * <pre>
+ * dff.setAllowedTypes(&quot;image/jpg&quot;);
+ * </pre>
+ * 
+ * the code indicates {@link HttpFileUploadParser} accept the <em>image/jpg</em>
+ * content type.
+ * 
+ * 
+ * @see AcceptableFileFactory
+ * @see AbstractFactory
+ * @see DiskFileFactory
+ * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */

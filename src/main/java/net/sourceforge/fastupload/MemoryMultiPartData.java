@@ -34,11 +34,12 @@ public class MemoryMultiPartData extends MultiPartData {
 
 	private byte[] buffer;
 
-	public MemoryMultiPartData() {
+	public MemoryMultiPartData(String name) {
+		super(name);
 	}
-
-	public MemoryMultiPartData(String charset) {
-		super(charset);
+	
+	public MemoryMultiPartData(String name, String charset) {
+		super(name, charset);
 	}
 
 	@Override
