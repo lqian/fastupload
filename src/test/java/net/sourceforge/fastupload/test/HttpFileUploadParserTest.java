@@ -32,7 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author linkqian
+ *  @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public class HttpFileUploadParserTest extends UploadParserTest {

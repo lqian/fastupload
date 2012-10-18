@@ -45,6 +45,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+/**
+ * 
+ *  @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class SimpleHttpServletRequestMock implements HttpServletRequest {
 
 	private InputStream inputStream ;

@@ -78,8 +78,8 @@ public class MemoryUploadParser {
 	 * 
 	 * @return list of MultiPartData
 	 */
-	public List<MultiPartData> parseList() throws IOException {
-		List<MultiPartData> multiparts = new ArrayList<MultiPartData>();
+	public List<MemoryMultiPartData> parseList() throws IOException {
+		List<MemoryMultiPartData> multiparts = new ArrayList<MemoryMultiPartData>();
 
 		while (chunk.find()) {
 			chunk.readContentHeader();
@@ -103,8 +103,8 @@ public class MemoryUploadParser {
 	 * 
 	 * @return name as key, MultiPartData object as value
 	 */
-	public HashMap<String, MultiPartData> parseMap() throws IOException {
-		HashMap<String, MultiPartData> multiparts = new HashMap<String, MultiPartData>();
+	public HashMap<String, MemoryMultiPartData> parseMap() throws IOException {
+		HashMap<String, MemoryMultiPartData> multiparts = new HashMap<String, MemoryMultiPartData>();
 		UploadChunk chunk = new UploadChunk(this.buffer, this.boundary, off, length);
 		while (chunk.find()) {
 			chunk.readContentHeader();
@@ -114,8 +114,8 @@ public class MemoryUploadParser {
 		return multiparts;
 	}
 
-	private void writeData(HashMap<String, MultiPartData> multiparts) throws IOException {
-		MultiPartData mpd = this.doWriteData();
+	private void writeData(HashMap<String, MemoryMultiPartData> multiparts) throws IOException {
+		MemoryMultiPartData mpd = this.doWriteData();
 		multiparts.put(mpd.getFieldName(), mpd);
 	}
 
@@ -123,12 +123,12 @@ public class MemoryUploadParser {
 	 * 
 	 * @param multiparts
 	 */
-	private void writeData(List<MultiPartData> multiparts) throws IOException {
+	private void writeData(List<MemoryMultiPartData> multiparts) throws IOException {
 		multiparts.add(this.doWriteData());
 	}
 
-	private MultiPartData doWriteData() throws IOException {
-		MultiPartData mpd = this.contentHeaderMap.createMultiPartData(this.multiPartDataFactory);
+	private MemoryMultiPartData doWriteData() throws IOException {
+		MemoryMultiPartData mpd = this.contentHeaderMap.createMultiPartData(this.multiPartDataFactory);
 		int s = chunk.readContentHeader() + 1;
 		int len = chunk.getBoundEnd() - s - 2;
 		if (len > 0)
@@ -136,7 +136,7 @@ public class MemoryUploadParser {
 		return mpd;
 	}
 
-	private void writeMixedPartData(List<MultiPartData> multiparts) {
+	private void writeMixedPartData(List<MemoryMultiPartData> multiparts) {
 		// TODO maybe to do
 
 	}

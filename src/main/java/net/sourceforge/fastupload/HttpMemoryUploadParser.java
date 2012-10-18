@@ -40,9 +40,9 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * HttpMemoryUploadParser httpMemoryUploadParser = new HttpMemoryUploadParser(  
  *                 request, mpdf);  
- *                 List<MultiPartData> list = httpMemoryUploadParser.parseList();  
+ *                 List<MemoryMultiPartData> list = httpMemoryUploadParser.parseList();  
  *   
- *  for (MultiPartData e : list) {  
+ *  for (MemoryMultiPartData e : list) {  
  *     if (e.isFile()) {  
  *         e.toFile(System.getProperty("user.home" + "/" + e.getFileName());  
  *     } else {  
@@ -106,11 +106,11 @@ public class HttpMemoryUploadParser extends AbstractUploadParser {
 		}
 	}
 
-	public List<MultiPartData> parseList() throws IOException {
+	public List<MemoryMultiPartData> parseList() throws IOException {
 		return memoryUploadParser.parseList();
 	}
 
-	public HashMap<String, MultiPartData> parseMap() throws IOException {
+	public HashMap<String, MemoryMultiPartData> parseMap() throws IOException {
 		return memoryUploadParser.parseMap();
 	}
 
