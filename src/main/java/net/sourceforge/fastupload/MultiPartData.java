@@ -53,9 +53,6 @@ public abstract class MultiPartData {
 	 */
 	protected int threshold = 0;
 	
-	
-	
-
 	public MultiPartData(String name) {
 		super();
 		this.name = name;

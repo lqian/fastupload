@@ -78,7 +78,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 	public int getContentLength() {
 		return Integer.parseInt(this.headers.get("Content-Length"));
 	}
-	
 
 	public AsyncContext getAsyncContext() {
 		// TODO Auto-generated method stub
@@ -99,8 +98,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 	public String getContentType() {
 		// TODO Auto-generated method stub
@@ -229,17 +226,17 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 
 	public void removeAttribute(String arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void setAttribute(String arg0, Object arg1) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public AsyncContext startAsync() {
@@ -384,13 +381,18 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 
 	public void login(String arg0, String arg1) throws ServletException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void logout() throws ServletException {
 		// TODO Auto-generated method stub
-
+		
 	}
+	
+
+	
+
+	
 
 }
 

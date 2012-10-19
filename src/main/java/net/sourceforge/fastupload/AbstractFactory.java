@@ -21,8 +21,7 @@
 package net.sourceforge.fastupload;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
@@ -34,7 +33,7 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 
 	protected String allowedTypes;
 
-	private Map<String, ContentHeaderMap> exceptionalMap = new TreeMap<String, ContentHeaderMap>();
+	private Set<ContentHeaderMap> exceptionalSet = new HashSet<ContentHeaderMap>();
 
 	private HashSet<String> allowedExtensionsSet;
 
@@ -56,14 +55,14 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 			if (allowedTypesSet.contains(contentHeaderMap.getContentType())) {
 				return true;
 			} else {
-				exceptionalMap.put(contentHeaderMap.getName(), contentHeaderMap);
+				exceptionalSet.add(contentHeaderMap);
 				return false;
 			}
 		}
 		if (contentHeaderMap.isFile() && allowedExtensionsSet != null) {
 			String extName = this.getExtension(contentHeaderMap.getFileName());
 			if (extName != null && !allowedExtensionsSet.contains(extName)) {
-				exceptionalMap.put(contentHeaderMap.getFileName(), contentHeaderMap);
+				exceptionalSet.add(contentHeaderMap);
 				return false;
 			}
 			return true;
@@ -71,8 +70,8 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 			return true;
 	}
 
-	public Map<String, ContentHeaderMap> getExceptionalMap() {
-		return exceptionalMap;
+	public Set<ContentHeaderMap> getExceptionals() {
+		return exceptionalSet;
 	}
 
 	public String getAllowedExtensions() {

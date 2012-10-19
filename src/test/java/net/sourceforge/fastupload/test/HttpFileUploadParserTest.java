@@ -64,7 +64,7 @@ public class HttpFileUploadParserTest extends UploadParserTest {
 		List<MultiPartFile> files = httpFileUploadParser.parse();
 
 		assertEquals(files.size(), 0);
-		assertEquals(diskFileFactory.getExceptionalMap().keySet().size(), 2);
+		assertEquals(diskFileFactory.getExceptionals().size(), 2);
 		 
 	}
 

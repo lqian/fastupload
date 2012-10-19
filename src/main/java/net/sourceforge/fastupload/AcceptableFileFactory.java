@@ -19,7 +19,9 @@
 */
 package net.sourceforge.fastupload;
 
-import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.ServletRequest;
 
 /**
  * a interface defines the function that checks a file name or content-type is acceptable by the given regular express pattern.
@@ -60,7 +62,7 @@ public interface AcceptableFileFactory {
 	 * return a map object contains all not-acceptable {@link ContentHeaderMap}, the key is the file name parsed from the {@link ServletRequest} input stream.
 	 * @return
 	 */
-	public Map<String, ContentHeaderMap> getExceptionalMap();
+	public Set<ContentHeaderMap> getExceptionals();
 	
 	public String getAllowedTypes();
 	
