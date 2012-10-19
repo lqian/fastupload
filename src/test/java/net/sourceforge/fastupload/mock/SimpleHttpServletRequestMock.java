@@ -25,25 +25,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 /**
  * 
@@ -79,17 +70,12 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		return Integer.parseInt(this.headers.get("Content-Length"));
 	}
 
-	public AsyncContext getAsyncContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Object getAttribute(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Enumeration<String> getAttributeNames() {
+	public Enumeration getAttributeNames() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -100,11 +86,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 	}
 
 	public String getContentType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public DispatcherType getDispatcherType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -129,7 +110,7 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		return null;
 	}
 
-	public Enumeration<Locale> getLocales() {
+	public Enumeration getLocales() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -139,12 +120,12 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		return null;
 	}
 
-	public Map<String, String[]> getParameterMap() {
+	public Map getParameterMap() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Enumeration<String> getParameterNames() {
+	public Enumeration getParameterNames() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -204,21 +185,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		return 0;
 	}
 
-	public ServletContext getServletContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isAsyncStarted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isAsyncSupported() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean isSecure() {
 		// TODO Auto-generated method stub
 		return false;
@@ -237,21 +203,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public AsyncContext startAsync() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public AsyncContext startAsync(ServletRequest arg0, ServletResponse arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean authenticate(HttpServletResponse arg0) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public String getAuthType() {
@@ -274,7 +225,7 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		return 0;
 	}
 
-	public Enumeration<String> getHeaders(String arg0) {
+	public Enumeration getHeaders(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -285,16 +236,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 	}
 
 	public String getMethod() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Part getPart(String arg0) throws IOException, IllegalStateException, ServletException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection<Part> getParts() throws IOException, IllegalStateException, ServletException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -378,22 +319,6 @@ public class SimpleHttpServletRequestMock implements HttpServletRequest {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void login(String arg0, String arg1) throws ServletException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void logout() throws ServletException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
-	
-
-	
-
 }
 
 class MockServletInputStream extends ServletInputStream{
