@@ -130,7 +130,7 @@ public class HttpFileUploadParser extends AbstractUploadParser {
 	}
 
 	@Override
-	public int getParseThreshold() {
+	public long getParseThreshold() {
 		return this.fileFactory.getParseThreshold();
 	}
 

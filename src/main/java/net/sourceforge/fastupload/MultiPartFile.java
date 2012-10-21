@@ -43,6 +43,8 @@ public abstract class MultiPartFile extends MultiPartData {
 	protected int bytes = 0;
 	protected boolean closed = false;
 	
+	
+	
 	public MultiPartFile(String name) {
 		super(name);
 	}
@@ -58,7 +60,7 @@ public abstract class MultiPartFile extends MultiPartData {
 	 * @param len
 	 * @throws IOException
 	 */
-	public void append(byte[] buff, int off, int len) throws IOException {
+	protected void append(byte[] buff, int off, int len) throws IOException {
 		bytes += len;
 		if (threshold > 0 && bytes > threshold)
 			throw ThresholdException.fileThresholdException(this);
@@ -71,6 +73,14 @@ public abstract class MultiPartFile extends MultiPartData {
 	 * @throws IOException
 	 */
 	public abstract void close() throws IOException;
+	
+	
+	
+	/**
+	 * get all bytes in a boundary contains in the {@link  MultiPartFile} object 
+	 * @return
+	 */
+	public abstract  byte[] getContentBuffer(); 
 	
 	/**
 	 * check the current writer or out is closed

@@ -51,7 +51,7 @@ public abstract class MultiPartData {
 	/*
 	 * the threshold of a {@link MultiPartData} object.
 	 */
-	protected int threshold = 0;
+	protected long threshold = 0;
 	
 	public MultiPartData(String name) {
 		super();
@@ -101,7 +101,7 @@ public abstract class MultiPartData {
 	 * @param len
 	 * @throws IOException
 	 */
-	public void append(byte[] buff, int off, int len) throws IOException {
+	protected void append(byte[] buff, int off, int len) throws IOException {
 		bytes += len;
 		if (threshold > 0 && bytes > threshold)
 			throw ThresholdException.newThresholdException(this);
@@ -125,11 +125,11 @@ public abstract class MultiPartData {
 		return bytes;
 	}
 
-	protected int getThreshold() {
+	protected long getThreshold() {
 		return threshold;
 	}
 
-	public void setThreshold(int threshold) {
+	public void setThreshold(long threshold) {
 		this.threshold = threshold;
 	}
 

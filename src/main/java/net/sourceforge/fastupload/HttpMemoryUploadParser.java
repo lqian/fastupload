@@ -82,6 +82,7 @@ public class HttpMemoryUploadParser extends AbstractUploadParser {
 
 	private MultiPartDataFactory multiPartDataFactory;
 
+
 	private MemoryUploadParser memoryUploadParser;
 
 	private ByteBuffer byteBuffer;
@@ -115,8 +116,17 @@ public class HttpMemoryUploadParser extends AbstractUploadParser {
 	}
 
 	@Override
-	protected int getParseThreshold() {
+	protected long getParseThreshold() {
 		return multiPartDataFactory.getParseThreshold();
 	}
+	
+	public MultiPartDataFactory getMultiPartDataFactory() {
+		return multiPartDataFactory;
+	}
+
+	public void setMultiPartDataFactory(MultiPartDataFactory multiPartDataFactory) {
+		this.multiPartDataFactory = multiPartDataFactory;
+	}
+
 
 }

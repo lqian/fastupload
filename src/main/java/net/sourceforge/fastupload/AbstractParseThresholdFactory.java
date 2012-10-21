@@ -25,13 +25,13 @@ package net.sourceforge.fastupload;
  */
 public abstract class AbstractParseThresholdFactory {
 	
-	protected int parseThreshold;
+	protected long parseThreshold;
 
-	public int getParseThreshold() {
+	public long getParseThreshold() {
 		return parseThreshold;
 	}
 
-	public void setParseThreshold(int parseThreshold) {
+	public void setParseThreshold(long parseThreshold) {
 		this.parseThreshold = parseThreshold;
 	}
 

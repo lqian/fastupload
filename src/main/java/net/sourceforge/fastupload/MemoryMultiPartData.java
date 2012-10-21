@@ -30,7 +30,7 @@ import java.io.IOException;
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
-public class MemoryMultiPartData extends MultiPartData {
+public class MemoryMultiPartData extends MultiPartFile {
 
 	private byte[] buffer;
 
@@ -77,6 +77,11 @@ public class MemoryMultiPartData extends MultiPartData {
 	 */
 	public byte[] getContentBuffer() {
 		return this.buffer;
+	}
+
+	@Override
+	public void close() throws IOException {
+		//ignore the method;
 	}
 
 }

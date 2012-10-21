@@ -23,7 +23,10 @@ package net.sourceforge.fastupload.exception;
 import net.sourceforge.fastupload.MultiPartData;
 import net.sourceforge.fastupload.MultiPartFile;
 
-
+/**
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class ThresholdException extends RuntimeException {
 
 	/**

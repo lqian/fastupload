@@ -45,7 +45,7 @@ public abstract class AbstractUploadParser {
 	/**
 	 * content length of HttpServletRequest header
 	 */
-	protected int contentLength;
+	protected long contentLength;
 	
 	
 	
@@ -79,7 +79,7 @@ public abstract class AbstractUploadParser {
 	protected void parseContentLength() {
 //		String entryValue = this.request.getHeader(_HEADER_CONTENT_LENGTH);
 //		contentLength = Long.parseLong(entryValue);
-		int parseThreshold = this.getParseThreshold();
+		long parseThreshold = this.getParseThreshold();
 		
 		contentLength = request.getContentLength();
 		if (parseThreshold > 0 && contentLength > parseThreshold)
@@ -91,6 +91,6 @@ public abstract class AbstractUploadParser {
 	}
 
 	
-	protected abstract int getParseThreshold() ; 
+	protected abstract long getParseThreshold() ; 
 	
 }

@@ -20,6 +20,10 @@
 
 package net.sourceforge.fastupload.exception;
 
+/**
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
 public class FileUploadParserException extends RuntimeException {
 
 	/**

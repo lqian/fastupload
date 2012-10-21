@@ -35,12 +35,12 @@ public interface ParseThreshold extends AcceptableFileFactory {
 	 * 
 	 * @param parseThreshold
 	 */
-	public void setParseThreshold(int parseThreshold);
+	public void setParseThreshold(long parseThreshold);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public int getParseThreshold();
+	public long getParseThreshold();
 
 }

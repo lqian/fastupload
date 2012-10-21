@@ -34,7 +34,7 @@ public class DiskFileFactory extends AbstractFactory implements FileFactory, Acc
 
 	private String charset;
 
-	private int threshold;
+	private long threshold;
 	
 	public DiskFileFactory(String path) {
 		this.path = this.marshal(path);
@@ -106,7 +106,7 @@ public class DiskFileFactory extends AbstractFactory implements FileFactory, Acc
 		return charset;
 	}
 
-	protected int getThreshold() {
+	protected long getThreshold() {
 		return threshold;
 	}
 
