@@ -83,8 +83,12 @@ public class ContentHeaderMap extends HashMap<String, String> {
 		return mpf;
 	}
 
-	public MemoryMultiPartData createMultiPartData(MultiPartDataFactory multiPartDataFactory) {
-		MemoryMultiPartData mpd = multiPartDataFactory.createMultiPartData(this.getFileName(), MemoryMultiPartData.class);
+	/**
+	 * @param multiPartDataFactory
+	 * @return
+	 */
+	public MemoryMultiPartData createMultiPartData(FileFactory multiPartDataFactory) {
+		MemoryMultiPartData mpd = multiPartDataFactory.createMulitPartFile(this.getFileName(), MemoryMultiPartData.class);
 		mpd.setContentHeaderMap(this);
 		return mpd;
 	}

@@ -46,7 +46,7 @@ public abstract class MultiPartDiskFile extends MultiPartFile {
 
 	public byte[] getContentBuffer() {
 		if (!closed())
-			throw new RuntimeException("aaa");
+			throw new RuntimeException("not a closed file, open denied");
 
 		try {
 			FileInputStream fis = new FileInputStream(this.name);

@@ -280,9 +280,9 @@ public class UploadChunk {
 
 	public HashMap<String, String> parseLine(String line) {
 		HashMap<String, String> hashMap = new HashMap<String, String>();
-		String[] sections = line.split(";");
+		String[] sections = line.split(";\\s");
 		for (String sec : sections) {
-			String[] vals = sec.split(":|(=\")");
+			String[] vals = sec.split(":\\s|(=\")");
 			if (vals.length > 1)
 				hashMap.put(vals[0].trim(), vals[1].trim().replaceAll("\"", ""));
 		}

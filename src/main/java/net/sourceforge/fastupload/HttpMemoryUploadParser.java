@@ -80,19 +80,18 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class HttpMemoryUploadParser extends AbstractUploadParser {
 
-	private MultiPartDataFactory multiPartDataFactory;
-
+	private FileFactory fileFactory;
 
 	private MemoryUploadParser memoryUploadParser;
 
 	private ByteBuffer byteBuffer;
 
-	public HttpMemoryUploadParser(HttpServletRequest request, MultiPartDataFactory multiPartDataFactory) throws IOException {
+	public HttpMemoryUploadParser(HttpServletRequest request, FileFactory fileFactory) throws IOException {
 		super();
 		this.request = request;
-		this.multiPartDataFactory = multiPartDataFactory;
+		this.fileFactory = fileFactory;
 		this.init();
-		this.memoryUploadParser = new MemoryUploadParser(byteBuffer.array(), this.boundary, multiPartDataFactory);
+		this.memoryUploadParser = new MemoryUploadParser(byteBuffer.array(), this.boundary, fileFactory);
 	}
 
 	private void init() throws IOException {
@@ -107,26 +106,16 @@ public class HttpMemoryUploadParser extends AbstractUploadParser {
 		}
 	}
 
-	public List<MemoryMultiPartData> parseList() throws IOException {
+	public List<MultiPartFile> parseList() throws IOException {
 		return memoryUploadParser.parseList();
 	}
 
-	public HashMap<String, MemoryMultiPartData> parseMap() throws IOException {
+	public HashMap<String, ? extends MultiPartFile> parseMap() throws IOException {
 		return memoryUploadParser.parseMap();
 	}
 
 	@Override
 	protected long getParseThreshold() {
-		return multiPartDataFactory.getParseThreshold();
+		return fileFactory.getParseThreshold();
 	}
-	
-	public MultiPartDataFactory getMultiPartDataFactory() {
-		return multiPartDataFactory;
-	}
-
-	public void setMultiPartDataFactory(MultiPartDataFactory multiPartDataFactory) {
-		this.multiPartDataFactory = multiPartDataFactory;
-	}
-
-
 }

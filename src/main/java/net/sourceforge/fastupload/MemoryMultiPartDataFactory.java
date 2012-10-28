@@ -27,7 +27,7 @@ import java.lang.reflect.Constructor;
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
-public class MemoryMultiPartDataFactory extends AbstractFactory implements MultiPartDataFactory {
+public class MemoryMultiPartDataFactory extends AbstractFactory implements FileFactory, ParseThreshold {
 
 	private String charset;
 
@@ -49,19 +49,6 @@ public class MemoryMultiPartDataFactory extends AbstractFactory implements Multi
 		this.threshold = threshold;
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends MultiPartData> T createMultiPartData(String name, Class<? extends MultiPartData> cls) {
-		try {
-			MultiPartData instance = charset == null ? doCreate(name, cls) : doCreate(name, charset, cls);
-			instance.setThreshold(threshold);
-			return (T) instance;
-		} catch (Exception e) {
-			// ignore the exception
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	/**
 	 * create an object which class extends {@link MultiPartData}.
 	 * 
@@ -71,9 +58,9 @@ public class MemoryMultiPartDataFactory extends AbstractFactory implements Multi
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T extends MultiPartData> T doCreate(String name, Class<? extends MultiPartData> cls) throws Exception {
-		MultiPartData mpd = null;
-		Constructor<? extends MultiPartData> constructor = cls.getConstructor(String.class);
+	protected <T extends MultiPartFile> T doCreate(String name, Class<? extends MultiPartFile> cls) throws Exception {
+		MultiPartFile mpd = null;
+		Constructor<? extends MultiPartFile> constructor = cls.getConstructor(String.class);
 		mpd = constructor.newInstance(name);
 		return (T) mpd;
 	}
@@ -89,14 +76,26 @@ public class MemoryMultiPartDataFactory extends AbstractFactory implements Multi
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T extends MultiPartData> T doCreate(String name, String charset, Class<? extends MultiPartData> cls)
+	protected <T extends MultiPartFile> T doCreate(String name, String charset, Class<? extends MultiPartFile> cls)
 			throws Exception {
-		MultiPartData mpd = null;
-		Constructor<? extends MultiPartData> constructor = cls.getConstructor(String.class, String.class);
+		MultiPartFile mpd = null;
+		Constructor<? extends MultiPartFile> constructor = cls.getConstructor(String.class, String.class);
 
 		// convert the charset specified
 		//name = new String(name.getBytes(), charset);
 		mpd = constructor.newInstance(name, charset);
 		return (T) mpd;
+	}
+
+	public <T extends MultiPartFile> T createMulitPartFile(String name, Class<? extends MultiPartFile> cls) {
+		try {
+			MultiPartFile instance = charset == null ? doCreate(name, cls) : doCreate(name, charset, cls);
+			instance.setThreshold(threshold);
+			return (T) instance;
+		} catch (Exception e) {
+			// ignore the exception
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

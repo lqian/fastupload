@@ -51,7 +51,7 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 		if (allowedExtensions == null && allowedTypes == null)
 			return true;
 
-		if (allowedTypesSet != null && contentHeaderMap.getContentType()!=null) {
+		if (allowedTypesSet != null && contentHeaderMap.getContentType() != null) {
 			if (allowedTypesSet.contains(contentHeaderMap.getContentType())) {
 				return true;
 			} else {
@@ -93,6 +93,8 @@ public abstract class AbstractFactory extends AbstractParseThresholdFactory impl
 	}
 
 	private HashSet<String> marshalSet(String types) {
+		if (types == null)
+			return null;
 		HashSet<String> set = new HashSet<String>(0);
 		String[] strs = types.split(",");
 		for (String s : strs) {

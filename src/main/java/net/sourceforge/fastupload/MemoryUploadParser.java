@@ -44,30 +44,30 @@ public class MemoryUploadParser {
 
 	private int length;
 
-	private MultiPartDataFactory multiPartDataFactory;
+	private FileFactory fileFactory;
 
 	private UploadChunk chunk;
 
 	private ContentHeaderMap contentHeaderMap;
 
-	public MemoryUploadParser(byte[] buffer, byte[] boundary, MultiPartDataFactory multiPartDataFactory) {
+	public MemoryUploadParser(byte[] buffer, byte[] boundary, FileFactory fileFactory) {
 		super();
 		this.buffer = buffer;
 		this.boundary = boundary;
-		this.multiPartDataFactory = multiPartDataFactory;
+		this.fileFactory = fileFactory;
 		this.off = 0;
 		this.length = buffer.length;
 		this.chunk = new UploadChunk(this.buffer, this.boundary, off, length);
 	}
 
 	public MemoryUploadParser(byte[] buffer, byte[] boundary, int off, int length,
-			MultiPartDataFactory multiPartDataFactory) {
+			FileFactory fileFactory) {
 		super();
 		this.buffer = buffer;
 		this.boundary = boundary;
 		this.off = off;
 		this.length = length;
-		this.multiPartDataFactory = multiPartDataFactory;
+		this.fileFactory = fileFactory;
 		this.chunk = new UploadChunk(this.buffer, this.boundary, off, length);
 	}
 
@@ -78,13 +78,13 @@ public class MemoryUploadParser {
 	 * 
 	 * @return list of MultiPartData
 	 */
-	public List<MemoryMultiPartData> parseList() throws IOException {
-		List<MemoryMultiPartData> multiparts = new ArrayList<MemoryMultiPartData>();
+	public List<MultiPartFile> parseList() throws IOException {
+		List<MultiPartFile> multiparts = new ArrayList<MultiPartFile>();
 
 		while (chunk.find()) {
 			chunk.readContentHeader();
 			contentHeaderMap = chunk.getContentHeaderMap();
-			if (multiPartDataFactory.acceptable(contentHeaderMap)){
+			if (fileFactory.acceptable(contentHeaderMap)){
 				if (contentHeaderMap.hasMultiPartMixed()) {
 					this.writeMixedPartData(multiparts);
 				} else {
@@ -103,7 +103,7 @@ public class MemoryUploadParser {
 	 * 
 	 * @return name as key, MultiPartData object as value
 	 */
-	public HashMap<String, MemoryMultiPartData> parseMap() throws IOException {
+	public HashMap<String, ? extends MultiPartFile> parseMap() throws IOException {
 		HashMap<String, MemoryMultiPartData> multiparts = new HashMap<String, MemoryMultiPartData>();
 		UploadChunk chunk = new UploadChunk(this.buffer, this.boundary, off, length);
 		while (chunk.find()) {
@@ -123,12 +123,12 @@ public class MemoryUploadParser {
 	 * 
 	 * @param multiparts
 	 */
-	private void writeData(List<MemoryMultiPartData> multiparts) throws IOException {
+	private void writeData(List<MultiPartFile> multiparts) throws IOException {
 		multiparts.add(this.doWriteData());
 	}
 
-	private MemoryMultiPartData doWriteData() throws IOException {
-		MemoryMultiPartData mpd = this.contentHeaderMap.createMultiPartData(this.multiPartDataFactory);
+	private MemoryMultiPartData  doWriteData() throws IOException {
+		MemoryMultiPartData mpd = this.contentHeaderMap.createMultiPartData(this.fileFactory);
 		int s = chunk.readContentHeader() + 1;
 		int len = chunk.getBoundEnd() - s - 2;
 		if (len > 0)
@@ -136,7 +136,7 @@ public class MemoryUploadParser {
 		return mpd;
 	}
 
-	private void writeMixedPartData(List<MemoryMultiPartData> multiparts) {
+	private void writeMixedPartData(List<MultiPartFile> multiparts) {
 		// TODO maybe to do
 
 	}

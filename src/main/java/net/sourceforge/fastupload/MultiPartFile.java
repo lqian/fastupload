@@ -127,6 +127,6 @@ public abstract class MultiPartFile extends MultiPartData {
 	 * always return <em>true</em> for {@link MultipartFile} object
 	 */
 	public boolean isFile() {
-		return true;
+		return this.contentHeaderMap.isFile();
 	}
 }

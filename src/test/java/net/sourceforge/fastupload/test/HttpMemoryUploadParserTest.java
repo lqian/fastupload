@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.fastupload.HttpMemoryUploadParser;
-import net.sourceforge.fastupload.MemoryMultiPartData;
 import net.sourceforge.fastupload.MemoryMultiPartDataFactory;
 import net.sourceforge.fastupload.MultiPartData;
+import net.sourceforge.fastupload.MultiPartFile;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class HttpMemoryUploadParserTest extends UploadParserTest {
 
 	@Test
 	public void testParse() throws IOException {
-		List<MemoryMultiPartData> parts = httpMemoryUploadParser.parseList();
+		List<MultiPartFile> parts = httpMemoryUploadParser.parseList();
 		assertEquals(parts.size(), 3);
 
 		MultiPartData part1 = parts.get(0);
@@ -62,7 +62,7 @@ public class HttpMemoryUploadParserTest extends UploadParserTest {
 		
 		multiPartDataFactory.setAllowedTypes("image/jpg");
 		multiPartDataFactory.setAllowedExtensions(".jpg");
-		List<MemoryMultiPartData> parts = httpMemoryUploadParser.parseList();
+		List<MultiPartFile> parts =httpMemoryUploadParser.parseList();
 		assertEquals(parts.size(), 1);
 
 		MultiPartData part1 = parts.get(0);
