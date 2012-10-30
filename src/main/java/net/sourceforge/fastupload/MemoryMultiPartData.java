@@ -22,6 +22,7 @@ package net.sourceforge.fastupload;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * parse the bytes of multipart data, read those bytes into a buffer, also the
@@ -83,5 +84,4 @@ public class MemoryMultiPartData extends MultiPartFile {
 	public void close() throws IOException {
 		//ignore the method;
 	}
-
 }

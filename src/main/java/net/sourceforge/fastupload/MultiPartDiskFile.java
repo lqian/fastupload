@@ -23,6 +23,7 @@ package net.sourceforge.fastupload;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 /**
@@ -31,6 +32,7 @@ import java.nio.ByteBuffer;
  * 
  */
 public abstract class MultiPartDiskFile extends MultiPartFile {
+
 
 	public MultiPartDiskFile(String name) {
 		super(name);

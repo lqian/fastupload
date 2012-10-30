@@ -22,6 +22,7 @@ package net.sourceforge.fastupload;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import net.sourceforge.fastupload.exception.ThresholdException;
@@ -81,6 +82,32 @@ public abstract class MultiPartFile extends MultiPartData {
 	 * @return
 	 */
 	public abstract  byte[] getContentBuffer(); 
+	
+	
+	/**
+	 * convert bytes of buffer with default charset specified in factory.
+	 * @return
+	 */
+	public  String getString() throws UnsupportedEncodingException  {
+		if (this.isFile())
+			throw new RuntimeException("not support operation");
+		else
+			return this.getString(this.charset);
+	}
+	
+	/**
+	 * convert bytes of buffer with default charset specified
+	 * @param charset
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	public  String getString(String  charset) throws UnsupportedEncodingException {
+		if (this.isFile()) {
+			throw new RuntimeException("not support operation");
+		} else {
+			return new String(this.getContentBuffer(), charset);
+		}
+	}
 	
 	/**
 	 * check the current writer or out is closed
