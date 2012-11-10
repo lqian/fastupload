@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
+ * represent headers of {@link HttpServletRequest} in a map structure. also the class provide some methods to fetch key information from the map.
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 

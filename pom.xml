@@ -1,12 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sourceforge</groupId>
+	<groupId>net.sf</groupId>
 	<artifactId>fastupload</artifactId>
-	<version>0.4.7-SNAPSHOT</version>
-	<url>http://sourceforge.net/projects/fastupload/</url>
-	<name>fastupload</name>
-	<description>the faster java upload component in the area of form-based, described with RFC-1867</description>
+	<version>0.4.7</version>
+	<url>http://sourceforge.net/projects/fastupload</url>
+	<name>Fast Upload</name>
+	<packaging>jar</packaging>
+	<description>the fastest java upload component in the area of form-based, described with RFC-1867</description>
 
 	<licenses>
 		<license>
@@ -17,8 +25,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://svn.code.sf.net/p/fastupload/code-0/trunk</url>
-		<connection>https://svn.code.sf.net/p/fastupload/code-0/trunk</connection>
+		<url>scm:git:git://git.code.sf.net/p/fastupload/code</url>
+		<developerConnection>scm:git:git://git.code.sf.net/p/fastupload/code</developerConnection>
+		<connection>git@git://git.code.sf.net/p/fastupload/code</connection>
 	</scm>
 
 	<developers>
@@ -28,8 +37,7 @@
 			<email>Link.Qian@yahoo.com</email>
 		</developer>
 	</developers>
-	
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.5</java.version>
@@ -54,6 +62,7 @@
 							<classifier>client</classifier>
 							<includes>
 								<include>${basedir}target/classes/net/sourceforge/fastupload/*</include>
+								<include>${basedir}target/classes/org/apache/struts2/dispatcher/multipart/*</include>
 							</includes>
 						</configuration>
 					</execution>
@@ -78,28 +87,21 @@
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
 			</plugin>
-			
-			
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-gpg-plugin</artifactId> -->
-<!-- 				<version>1.4</version> -->
-<!-- 			</plugin> -->
 
-			<!-- maven gpg plugin -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-gpg-plugin</artifactId> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>sign-artifacts</id> -->
-<!-- 						<phase>verify</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>sign</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 	</build>

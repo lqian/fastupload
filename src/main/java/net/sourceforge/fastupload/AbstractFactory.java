@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * the class implements {@link AcceptableFileFactory} and ｛@link ParseThreshold} interfaces.
+ * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */

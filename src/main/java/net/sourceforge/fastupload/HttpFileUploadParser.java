@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  * the main function
  * 
  * <pre>
- * List &lt; MultiPartFile &gt; HttpFileUploadParser.parse()
+ * List &lt;MultiPartFile&gt; = HttpFileUploadParser.parse()
  * </pre>
  * 
  * , read a part of data of {@link ServletInputStream} into constant size
@@ -71,7 +71,7 @@ import javax.servlet.http.HttpServletRequest;
  * dff.setParseThreshold(0x100000);
  * </pre>
  * 
- * the code indicates the max content-length of whole requesting.
+ * the code indicates the max content-length of whole requesting data.
  * 
  * fastupload provides an advanced mechanism that filters uploading files. It
  * does not like others form-based uploading component or framework filter
@@ -96,6 +96,7 @@ import javax.servlet.http.HttpServletRequest;
  * @see AcceptableFileFactory
  * @see AbstractFactory
  * @see DiskFileFactory
+ * @see HttpMemoryUploadParser
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 

@@ -21,6 +21,7 @@ package net.sourceforge.fastupload.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import net.sourceforge.fastupload.DiskFileFactory;
 import net.sourceforge.fastupload.HttpFileUploadParser;
 import net.sourceforge.fastupload.MultiPartFile;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,6 +42,8 @@ public class HttpFileUploadParserTest extends UploadParserTest {
 	private HttpFileUploadParser httpFileUploadParser;
 
 	private DiskFileFactory diskFileFactory;
+	
+	private List<MultiPartFile> files;
 
 	@Before
 	public void setUp() throws IOException {
@@ -47,10 +51,17 @@ public class HttpFileUploadParserTest extends UploadParserTest {
 		diskFileFactory = new DiskFileFactory(System.getProperty("user.home"), "utf-8");
 		httpFileUploadParser = new HttpFileUploadParser(simpleHttpServletRequestMock, diskFileFactory);
 	}
+	
+	@After
+	public void cleanUp() throws IOException {
+		for (MultiPartFile f: files) {
+			new File(f.getName()).delete();
+		}
+	}
 
 	@Test
 	public void testParse() throws IOException {
-		List<MultiPartFile> files = httpFileUploadParser.parse();
+		  files = httpFileUploadParser.parse();
 
 		assertEquals(files.size(), 2);
 
@@ -62,7 +73,7 @@ public class HttpFileUploadParserTest extends UploadParserTest {
 	@Test
 	public void testRandomFileName() throws IOException {
 		diskFileFactory.setRandomFileName(true);
-		List<MultiPartFile> files = httpFileUploadParser.parse();
+		 files = httpFileUploadParser.parse();
 		assertEquals(files.size(), 2);
 		MultiPartFile file1 = files.get(0);
 		assertEquals(file1.isFile(), true);
@@ -71,7 +82,7 @@ public class HttpFileUploadParserTest extends UploadParserTest {
 	@Test
 	public void testAcceptableParse() throws IOException {
 		diskFileFactory.setAllowedExtensions(".jpg, .png");
-		List<MultiPartFile> files = httpFileUploadParser.parse();
+		files = httpFileUploadParser.parse();
 
 		assertEquals(files.size(), 0);
 		assertEquals(diskFileFactory.getExceptionals().size(), 2);

@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * HttpMemoryUploadParser httpMemoryUploadParser = new HttpMemoryUploadParser(  
  *                 request, mpdf);  
- *                 List<MemoryMultiPartData> list = httpMemoryUploadParser.parseList();  
+ *                 List&lt;MultiPartFile&gt; list = httpMemoryUploadParser.parseList();  
  *   
  *  for (MemoryMultiPartData e : list) {  
  *     if (e.isFile()) {  

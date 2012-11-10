@@ -20,6 +20,8 @@
 package net.sourceforge.fastupload;
 
 /**
+ * a interface defines max number of <em>content-length</em> in {@link HttpServletRequest} headers
+ * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  *
  */

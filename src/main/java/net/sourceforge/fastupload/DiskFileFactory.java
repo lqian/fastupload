@@ -24,6 +24,9 @@ import java.lang.reflect.Constructor;
 import java.util.Random;
 
 /**
+ * factory that create {@link MultiPartFile } object which class inherits from
+ * {@link MultiPartFile }. it should be {@link MultiPartTextFile} and
+ * {@link MultiPartBinaryFile}
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
