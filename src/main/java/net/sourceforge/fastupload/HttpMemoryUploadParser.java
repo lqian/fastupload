@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
  *                 request, mpdf);  
  *                 List&lt;MultiPartFile&gt; list = httpMemoryUploadParser.parseList();  
  *   
- *  for (MemoryMultiPartData e : list) {  
+ *  for (MultiPartFile e : list) {  
  *     if (e.isFile()) {  
  *         e.toFile(System.getProperty("user.home" + "/" + e.getFileName());  
  *     } else {  

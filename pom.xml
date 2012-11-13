@@ -8,8 +8,8 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sf</groupId>
-	<artifactId>fastupload</artifactId>
+	<groupId>net.sf.fastupload</groupId>
+	<artifactId>fastupload-api</artifactId>
 	<version>0.4.7</version>
 	<url>http://sourceforge.net/projects/fastupload</url>
 	<name>Fast Upload</name>
