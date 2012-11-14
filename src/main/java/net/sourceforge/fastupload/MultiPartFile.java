@@ -21,6 +21,7 @@
 package net.sourceforge.fastupload;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -75,6 +76,13 @@ public abstract class MultiPartFile extends MultiPartData {
 	 */
 	public abstract void close() throws IOException;
 	
+	
+	/**
+	 * open a {@link InputStream} object for the {@link MultiPartFile} object
+	 * @return
+	 * @throws IOException
+	 */
+	public abstract InputStream getInputStream() throws IOException;
 	
 	
 	/**

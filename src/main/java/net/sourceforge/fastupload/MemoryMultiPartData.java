@@ -20,8 +20,11 @@
 
 package net.sourceforge.fastupload;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * parse the bytes of multipart data, read those bytes into a buffer, also the
@@ -37,7 +40,7 @@ public class MemoryMultiPartData extends MultiPartFile {
 	public MemoryMultiPartData(String name) {
 		super(name);
 	}
-	
+
 	public MemoryMultiPartData(String name, String charset) {
 		super(name, charset);
 	}
@@ -81,6 +84,16 @@ public class MemoryMultiPartData extends MultiPartFile {
 
 	@Override
 	public void close() throws IOException {
-		//ignore the method;
+		// ignore the method;
+	}
+
+	/**
+	 * 
+	 */
+	public InputStream getInputStream() throws IOException {
+		if (this.isFile())
+			return new ByteArrayInputStream(this.getContentBuffer());
+		else
+			return null;
 	}
 }

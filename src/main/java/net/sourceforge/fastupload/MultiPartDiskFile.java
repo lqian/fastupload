@@ -23,6 +23,7 @@ package net.sourceforge.fastupload;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -42,7 +43,7 @@ public abstract class MultiPartDiskFile extends MultiPartFile {
 	}
 
 	public boolean toFile(String dest) {
-		return new File(this.name).renameTo(new File(dest));
+		return new File(getName()).renameTo(new File(dest));
 	}
 
 	public byte[] getContentBuffer() {
@@ -67,4 +68,15 @@ public abstract class MultiPartDiskFile extends MultiPartFile {
 		}
 		return null;
 	}
+
+	
+	/**
+	 * open a {@link FileInputStream} object for the current {@link MultiPartDiskFile} object
+	 */
+	public InputStream getInputStream() throws IOException {
+		return new FileInputStream(getName());
+	}
+	
+	
+	
 }
