@@ -9,7 +9,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.fastupload</groupId>
-	<artifactId>fastupload-api</artifactId>
+	<artifactId>fastupload-core</artifactId>
 	<version>0.4.7</version>
 	<url>http://sourceforge.net/projects/fastupload</url>
 	<name>Fast Upload</name>
@@ -23,12 +23,17 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<scm>
-		<url>scm:git:git://git.code.sf.net/p/fastupload/code</url>
-		<developerConnection>scm:git:git://git.code.sf.net/p/fastupload/code</developerConnection>
-		<connection>git@git://git.code.sf.net/p/fastupload/code</connection>
+		<connection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</connection>
+		<developerConnection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</developerConnection>
+		<url>https://svn.code.sf.net/p/fastupload/code-0/trunk/</url>
 	</scm>
+
+	<!-- <scm> -->
+	<!-- <url>scm:git:git://git.code.sf.net/p/fastupload/code</url> -->
+	<!-- <developerConnection>scm:git:git://git.code.sf.net/p/fastupload/code</developerConnection> -->
+	<!-- <connection>git@git://git.code.sf.net/p/fastupload/code</connection> -->
+	<!-- </scm> -->
 
 	<developers>
 		<developer>

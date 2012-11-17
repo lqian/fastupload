@@ -21,7 +21,6 @@ package net.sourceforge.fastupload.test;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import net.sourceforge.fastupload.HttpMemoryUploadParser;
