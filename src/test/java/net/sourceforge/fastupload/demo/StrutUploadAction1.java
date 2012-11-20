@@ -27,14 +27,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * 
  */
 public class StrutUploadAction1 extends ActionSupport {
-
-	 
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4793885715910217866L;
-
+ 
 	private MultiPartFile photo;
 
 	private String description;
