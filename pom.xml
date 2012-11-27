@@ -31,7 +31,7 @@
 	<!-- use git for source code repository management -->
 	<scm>
 		<url>scm:git:git://git.code.sf.net/p/fastupload/code</url>
-		<developerConnection>scm:git:git://linkidata@git.code.sf.net/p/fastupload/code</developerConnection>
+		<developerConnection>scm:git:ssh://linkidata@git.code.sf.net/p/fastupload/code</developerConnection>
 		<connection>git@git://git.code.sf.net/p/fastupload/code</connection>
 	</scm>
 
