@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.fastupload</groupId>
 	<artifactId>fastupload-core</artifactId>
-	<version>0.4.7</version>
+	<version>0.4.7-SNAPSHOT</version>
 	<url>http://sourceforge.net/projects/fastupload</url>
 	<name>Fast Upload</name>
 	<packaging>jar</packaging>
@@ -23,17 +23,18 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<scm>
-		<connection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</developerConnection>
-		<url>https://svn.code.sf.net/p/fastupload/code-0/trunk/</url>
-	</scm>
+<!-- 	<scm> -->
+<!-- 		<connection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</connection> -->
+<!-- 		<developerConnection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</developerConnection> -->
+<!-- 		<url>https://svn.code.sf.net/p/fastupload/code-0/trunk/</url> -->
+<!-- 	</scm> -->
 
-	<!-- <scm> -->
-	<!-- <url>scm:git:git://git.code.sf.net/p/fastupload/code</url> -->
-	<!-- <developerConnection>scm:git:git://git.code.sf.net/p/fastupload/code</developerConnection> -->
-	<!-- <connection>git@git://git.code.sf.net/p/fastupload/code</connection> -->
-	<!-- </scm> -->
+	<!-- use git for source code repository management -->
+	<scm>
+		<url>scm:git:git://git.code.sf.net/p/fastupload/code</url>
+		<developerConnection>scm:git:git://git.code.sf.net/p/fastupload/code</developerConnection>
+		<connection>git@git://git.code.sf.net/p/fastupload/code</connection>
+	</scm>
 
 	<developers>
 		<developer>
@@ -67,7 +68,7 @@
 							<classifier>client</classifier>
 							<includes>
 								<include>${basedir}target/classes/net/sourceforge/fastupload/*</include>
-								<include>${basedir}target/classes/org/apache/struts2/dispatcher/multipart/*</include>
+<!-- 								<include>${basedir}target/classes/org/apache/struts2/dispatcher/multipart/*</include> -->
 							</includes>
 						</configuration>
 					</execution>
