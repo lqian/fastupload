@@ -55,9 +55,13 @@ public class UploadChunk {
 	 */
 	private int boundEnd = -1;
 	
+	private int contentStart ;
+	
 	private BoundaryFinder boundayFinder;
 	
 	private BoundaryFinder subBoundayFinder;
+	
+	private final int PRE_SKIP = 40;
 
 	
 	
@@ -125,7 +129,7 @@ public class UploadChunk {
 	public boolean find() {
 		boundStart = boundayFinder.indexOf(buffer, pos, length);
 		if (boundStart != -1)
-			boundEnd = boundayFinder.indexOf(buffer,  boundStart + boundayFinder.getBoundaryLength(), length);
+			boundEnd = boundayFinder.indexOf(buffer,  boundStart + boundayFinder.getBoundaryLength() + PRE_SKIP, length);
 		if (boundEnd != -1) {
 			pos = boundEnd;
 		}
@@ -143,7 +147,7 @@ public class UploadChunk {
 			return false;
 		boundStart = subBoundayFinder.indexOf(buffer, s, length);
 		if (boundStart != -1)
-			boundEnd = subBoundayFinder.indexOf(buffer, boundStart + subBoundayFinder.getBoundaryLength(), length);
+			boundEnd = subBoundayFinder.indexOf(buffer, boundStart + subBoundayFinder.getBoundaryLength() + PRE_SKIP, length);
 		if (boundEnd != -1) {
 			pos = boundEnd;
 		}
@@ -193,36 +197,38 @@ public class UploadChunk {
 	 *         successfully, else return -1;
 	 */
 	public int readContentHeader() {
-		this.contentHeaderMap = null;
+//		this.contentHeaderMap = null;
 
-		int s = boundStart, p;
-		p = readLine(s + 2); // read line boundary/sub-boundary
+		int s = boundStart + boundayFinder.getBoundaryLength() + 2, p; //skip the boundary line
+		p = readLine(s); // read disposition
 		if (p == -1)
 			return p;
+		HashMap<String, String> disposition = this.parseLine(this.substitute(buffer, s, p));
 
-		s = p;
-		p = readLine(s + 2);
-		if (p == -1)
-			return p;
-		HashMap<String, String> dispostion = this.parseLine(this.substitute(buffer, s, p));
+//		s = p;
+//		p = readLine(s + 2);
+//		if (p == -1)
+//			return p;
+//		//HashMap<String, String> dispostion = this.parseLine(this.substitute(buffer, s, p));
 
-		this.contentHeaderMap = new ContentHeaderMap();
-		this.contentHeaderMap.putAll(dispostion);
+		contentHeaderMap = new ContentHeaderMap();
+		contentHeaderMap.putAll(disposition);
 
-		if (this.contentHeaderMap.isFile()) {
+		if (contentHeaderMap.isFile()) {
 			s = p;
 			p = readLine(s + 2);
 			if (p == -1)
 				return p;
 			HashMap<String, String> type = this.parseLine(this.substitute(buffer, s, p));
 
-			this.contentHeaderMap.putAll(type);
+			contentHeaderMap.putAll(type);
 			
 			// TODO: perhaps, need to parse the content type to determine whether
 			// read transfer encoding into header map.
 		}
 
-		return p + 2;
+		contentStart = p + 3;
+		return contentStart;
 	}
 
 	/**
@@ -295,4 +301,13 @@ public class UploadChunk {
 	public ContentHeaderMap getContentHeaderMap() {
 		return contentHeaderMap;
 	}
+
+	/**
+	 * @return the contentStart
+	 */
+	public int getContentStart() {
+		return contentStart;
+	}
+
+	
 }

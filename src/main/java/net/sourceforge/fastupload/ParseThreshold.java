@@ -20,6 +20,8 @@
 
 package net.sourceforge.fastupload;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * an interface that declare the total length of {@link HttpServletRequest}
  * input stream.

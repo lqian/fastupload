@@ -22,6 +22,7 @@ package net.sourceforge.fastupload;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
 /**

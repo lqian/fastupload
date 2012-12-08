@@ -23,6 +23,8 @@ package net.sourceforge.fastupload;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * represent headers of {@link HttpServletRequest} in a map structure. also the class provide some methods to fetch key information from the map.
  * 

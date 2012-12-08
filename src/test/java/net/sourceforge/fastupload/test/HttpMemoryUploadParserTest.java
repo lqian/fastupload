@@ -18,6 +18,7 @@
  */
 package net.sourceforge.fastupload.test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -53,8 +54,12 @@ public class HttpMemoryUploadParserTest extends UploadParserTest {
 		List<MultiPartFile> parts = httpMemoryUploadParser.parseList();
 		assertEquals(parts.size(), 3);
 
-		MultiPartData part1 = parts.get(0);
+		MultiPartFile part1 = parts.get(0);
 		assertEquals(part1.isFile(), true);
+		
+		MultiPartFile text = parts.get(2);
+		assertFalse(text.isFile());
+		assertEquals(text.getString(), "11111");
 	}
 	
 	

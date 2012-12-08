@@ -102,8 +102,8 @@ public class BoundaryFinder {
 				}
 			}
 			// i += needle.length - j; // For naive method
-			i += Math.max(offsetTable[boundary.length - 1 - j], charTable[buffer[i] < 0 ? buffer[i] + 256 : buffer[i]]);
-
+			int offset = Math.max(offsetTable[boundary.length - 1 - j], charTable[buffer[i] < 0 ? buffer[i] + 256 : buffer[i]]);
+			i += offset;
 		}
 		return -1;
 	}
@@ -118,7 +118,7 @@ public class BoundaryFinder {
 			table[i] = needle.length;
 		}
 		for (int i = 0; i < needle.length - 1; ++i) {
-			table[needle[i] < 0 ? needle[i] + 256 : needle[i]] = needle.length - 1 - i;
+			table[needle[i]] = needle.length - 1 - i;
 		}
 		return table;
 	}
@@ -163,5 +163,18 @@ public class BoundaryFinder {
 			len += 1;
 		}
 		return len;
+	}
+	
+	public static void main(String[] args) {
+		byte[] boundary = "---------------------------194760164713951335551783200939".getBytes();
+		byte[] boundary2 = new byte[boundary.length];
+		BoundaryFinder bf = new BoundaryFinder(boundary);
+		byte[] text= ("-----------------------------194760164713951335551783200939\r\n" +
+				"Content-Disposition: form-data; name=\"_text1.text1\"\r\n" +
+				"123123123123dfdfsdfsdafsdaffdafasfa0939ttttttttttttttttttttertertqweqweqwrrrrr9391112235551783200939\r\n" +
+				"-----------------------------194760164713951335551783200939--").getBytes();
+		int i = bf.indexOf(text, 20);
+		System.arraycopy(text, i, boundary2, 0, boundary.length);
+		System.out.println("index: " + i  + " " + new String(boundary2) );
 	}
 }

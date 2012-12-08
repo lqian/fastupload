@@ -28,6 +28,8 @@ import java.io.Writer;
 
 import net.sourceforge.fastupload.exception.ThresholdException;
 
+import org.springframework.web.multipart.MultipartFile;
+
 
 /**
  * 

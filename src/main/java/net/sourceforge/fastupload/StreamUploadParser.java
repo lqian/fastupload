@@ -169,7 +169,7 @@ public class StreamUploadParser {
 			multiPartFile = contentMap.createMultiPartFile(fileFactory);
 
 			if (multiPartFile != null) {
-				int s = chunk.readContentHeader() + 1;
+				int s = chunk.getContentStart();
 				int len = chunk.getBoundEnd() - s - 2;
 				multiPartFile.append(chunk.getBuffer(), s, len);
 				multiPartFile.close();

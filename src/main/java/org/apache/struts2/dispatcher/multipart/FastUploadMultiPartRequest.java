@@ -192,7 +192,8 @@ public class FastUploadMultiPartRequest implements MultiPartRequest {
 		if (this.fieldParams.containsKey(fieldName)) {
 			ArrayList<File> files = new ArrayList<File>();
 			if (this.fieldParams.get(fieldName) != null) {
-				files.add(new File(fieldParams.get(fieldName).getFileName()));
+				
+				files.add(new File(fieldParams.get(fieldName).getName())); // use getName() since getFileName() changed
 			}
 			return files.toArray(new File[files.size()]);
 		}

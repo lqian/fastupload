@@ -19,6 +19,8 @@
 */
 package net.sourceforge.fastupload;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * a interface defines max number of <em>content-length</em> in {@link HttpServletRequest} headers
  * 
