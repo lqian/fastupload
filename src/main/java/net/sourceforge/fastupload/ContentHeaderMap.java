@@ -20,13 +20,24 @@
 
 package net.sourceforge.fastupload;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * represent headers of {@link HttpServletRequest} in a map structure. also the class provide some methods to fetch key information from the map.
+ * Represent headers of a boundary of multipart/form-data input stream. refer to
+ * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC1867</a>， Every boundary has
+ * it owner header. for example,<br/>
+ * -----------------------------------------------------------------------------
+ * 
+ * <pre>
+ * --AaB03x
+ *    content-disposition: form-data; name="pics"; filename="file1.txt"
+ *    Content-Type: text/plain
+ * </pre>
+ * 
+ * ----------------------------------------------------------------------------
+ * <p/> The header contains key information for form-based uploading file.
+ * The class use {@link Map} structure stores this information and provide some
+ * convenience methods to fetch this information from the map.
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
@@ -57,66 +68,66 @@ public class ContentHeaderMap extends HashMap<String, String> {
 	}
 
 	/**
-	 * parse file name and start position of its content in the buffer and
-	 * determines whether file is binary or text, the function changes the
-	 * <em>p</em> value by find the boundary.
+	 * check content type in header is a textable
 	 * 
-	 * @param buffer
-	 * @param pos
-	 *            , point the current byte of the buffer.
-	 * @return a {@link MultiPartFile} object if find a uploading file, else
-	 *         return null.
-	 * @throws IOException
+	 * @return <em>true</em> if content type entity starts with <em>text/</em>
+	 *         pattern, or the header doesn't contain content type entity
 	 */
-	public MultiPartFile createMultiPartFile(FileFactory fileFactory) {
-		MultiPartFile mpf = null;
-		if (this.isFile()) {
-			String fileName = this.getFileName();
-			if (fileName.trim().length() > 0) { // prevent
-												// application/octet-stream
-				String ct = this.getContentType();
-				if (ct.indexOf(_TEXT_CONTENT_TYPE_PREFIX) != -1) {
-					mpf = fileFactory.createMulitPartFile(fileName, MultiPartTextFile.class);
-				} else {
-					mpf = fileFactory.createMulitPartFile(fileName, MultiPartBinaryFile.class);
-				}
-				mpf.setContentHeaderMap(this); // set content header map
-			}
-		}
-		return mpf;
+	public boolean isTextable() {
+		return this.getContentType() == null ? true : getContentType().startsWith(_TEXT_CONTENT_TYPE_PREFIX);
 	}
 
 	/**
-	 * @param multiPartDataFactory
+	 * get sub-boundary if current boundary header is mixed
+	 * 
 	 * @return
 	 */
-	public MemoryMultiPartData createMultiPartData(FileFactory multiPartDataFactory) {
-		MemoryMultiPartData mpd = multiPartDataFactory.createMulitPartFile(this.getFileName(), MemoryMultiPartData.class);
-		mpd.setContentHeaderMap(this);
-		return mpd;
-	}
-
 	public byte[] getSubBoundary() {
 		return this.get(_BOUNDARY_KEY).getBytes();
 	}
 
+	/**
+	 * check current boundary header whether contains <em>Content-Type</em> entity
+	 * 
+	 * @return
+	 */
 	public boolean isFile() {
 		return this.containsKey(_FILE_NAME_KEY);
 	}
 
+	/**
+	 * get the name entity from current boundary header, also the name is a
+	 * input field name in HTML form uploading
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return this.get(_NAME_KEY);
 	}
 
+	/**
+	 * if current boundary header contains <em>filename</em> entity, parse its
+	 * value.
+	 * 
+	 * some earlier IE browser encode full name of file system in the client
+	 * 
+	 * @return
+	 */
 	public String getFileName() {
 		String fn = this.get(_FILE_NAME_KEY);
 		if (fn != null) {
 			int i = fn.lastIndexOf("\\");
-			if (i!=-1) fn = fn.substring(i+1);
+			if (i != -1)
+				fn = fn.substring(i + 1);
 		}
 		return fn;
 	}
 
+	/**
+	 * get the content type of current boundary header
+	 * 
+	 * @return
+	 */
 	public String getContentType() {
 		return this.get(_CONTENT_TYPE_KEY);
 	}

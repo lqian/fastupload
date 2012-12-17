@@ -1,5 +1,4 @@
 /*
- * 
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -17,28 +16,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package net.sourceforge.fastupload;
 
-/**
- * an interface declares methods that create object which is instance of
- * sub-class of {@link MultiPartData}
- * 
- * @deprecated
- * @since 0.5.0
- * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
- * 
- */
-public interface MultiPartDataFactory extends ParseThreshold {
+import static org.junit.Assert.*;
 
-	/**
-	 * 
-	 * @param name
-	 *            , the name for identifying the instance of sub-class of
-	 *            {@link MultiPartData}
-	 * @param cls
-	 *            the class of sub-class of {@link MultiPartData}
-	 * @return an object that is instance of sub-class of {@link MultiPartData}
-	 */
-	public <T extends MultiPartData> T createMultiPartData(String name, Class<? extends MultiPartData> cls);
+import java.util.HashMap;
+
+import net.sourceforge.fastupload.util.BoundaryFinder;
+import net.sourceforge.fastupload.util.UploadChunk;
+
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
+ *
+ */
+public class UploadChunkTest {
+	
+	private UploadChunk uploadChunk;
+	
+	private byte[] buffer;
+	
+	private BoundaryFinder boundaryFinder;
+	
+	@Before
+	public void setUp() {
+		uploadChunk = new UploadChunk(buffer, boundaryFinder, 0);
+	}
+	
+	@Test
+	public void testParseLine1() {
+		HashMap<String, String> header = uploadChunk.parseLine("Content-Disposition: form-data; name=\"file1\"; filename=\"C:\\Users\\admin\\Desktop\\hosts\"");
+		assertEquals(header.entrySet().size(), 3);
+	}
+	
+	@Test
+	public void testParseLine2() {
+		HashMap<String, String> header = uploadChunk.parseLine("Content-Type: text/plain");
+		assertEquals(header.entrySet().size(), 1);
+	}
+
 }

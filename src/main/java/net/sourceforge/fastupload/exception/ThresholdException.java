@@ -20,7 +20,6 @@
 
 package net.sourceforge.fastupload.exception;
 
-import net.sourceforge.fastupload.MultiPartData;
 import net.sourceforge.fastupload.MultiPartFile;
 
 /**
@@ -44,10 +43,5 @@ public class ThresholdException extends RuntimeException {
 	
 	public static ThresholdException fileThresholdException(MultiPartFile multiPartFile) {
 		return new ThresholdException("a MultiPartFile length exceeds ParseThreshold: " + multiPartFile);
-	}
-
-	
-	public static ThresholdException newThresholdException(MultiPartData multiPartData) {
-		return new ThresholdException("a MultiPartFile length exceeds ParseThreshold: " + multiPartData);
 	}
 }

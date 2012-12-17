@@ -24,21 +24,28 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
+import java.io.UnsupportedEncodingException;
 
 /**
+ * the class provides write binary data of multipart/form-data boundary into a
+ * disk file. just convert <em>file name</em> with specified charset
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public abstract class MultiPartDiskFile extends MultiPartFile {
 
-
-	public MultiPartDiskFile(String name) {
-		super(name);
+	
+	/**
+	 * default constructor 
+	 * @param  full file name 
+	 * @throws UnsupportedEncodingException 
+	 */
+	public MultiPartDiskFile(String fileName) throws UnsupportedEncodingException {
+		super(fileName);
 	}
 
-	public MultiPartDiskFile(String name, String charset) {
+	public MultiPartDiskFile(String name, String charset) throws UnsupportedEncodingException {
 		super(name, charset);
 	}
 
@@ -46,37 +53,18 @@ public abstract class MultiPartDiskFile extends MultiPartFile {
 		return new File(getName()).renameTo(new File(dest));
 	}
 
+	@Override
 	public byte[] getContentBuffer() {
-		if (!closed())
-			throw new RuntimeException("not a closed file, open denied");
-
-		try {
-			FileInputStream fis = new FileInputStream(this.name);
-			ByteBuffer buffer = ByteBuffer.allocate(fis.available());
-
-			byte[] b = new byte[8192];
-			int c = 0;
-
-			while ((c = fis.read(b)) != -1) {
-				buffer.put(b, 0, c);
-			}
-			buffer.flip();
-			fis.close();
-			return buffer.array();
-		} catch (IOException e) {
-			// TODO ignore the exception
-		}
-		return null;
+		// not support the operation
+		throw new RuntimeException("not a closed file, open denied");
 	}
 
-	
 	/**
-	 * open a {@link FileInputStream} object for the current {@link MultiPartDiskFile} object
+	 * open a {@link FileInputStream} object for the current
+	 * {@link MultiPartDiskFile} object
 	 */
 	public InputStream getInputStream() throws IOException {
 		return new FileInputStream(getName());
 	}
-	
-	
-	
+
 }

@@ -20,10 +20,13 @@
 
 package net.sourceforge.fastupload;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 /**
  * parse the bytes of multipart data, read those bytes into a buffer, also the
@@ -32,23 +35,38 @@ import java.io.InputStream;
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
-public class MemoryMultiPartData extends MultiPartFile {
+public class MemoryMultiPartFile extends MultiPartFile {
 
+	/**
+	 * shared buffer of current multipart/form-data input stream
+	 */
 	private byte[] buffer;
+	
+	/**
+	 * content start position of a boundary
+	 */
+	private int contentStart;
+	
+	/**
+	 * length of bytes for content of current boundary
+	 */
+	protected int len;
 
-	public MemoryMultiPartData(String name) {
+	public MemoryMultiPartFile(String name) throws UnsupportedEncodingException {
 		super(name);
 	}
 
-	public MemoryMultiPartData(String name, String charset) {
+	public MemoryMultiPartFile(String name, String charset) throws UnsupportedEncodingException {
 		super(name, charset);
 	}
 
 	@Override
 	public void append(byte[] buff, int off, int len) throws IOException {
 		super.append(buff, off, len);
-		buffer = new byte[len];
-		System.arraycopy(buff, off, buffer, 0, len);
+		this.buffer = buff;
+		this.contentStart = off;
+		this.len = len;
+		
 	}
 
 	/**
@@ -58,16 +76,26 @@ public class MemoryMultiPartData extends MultiPartFile {
 	 * @throws IOException
 	 */
 	public boolean toFile(String target) throws IOException {
-
 		if (this.getBytes() == 0)
 			return false;
 
 		// TODO convert charset if it's text format
-		FileOutputStream out = new FileOutputStream(target);
-		out.write(buffer);
-		out.flush();
-		out.close();
-		return true;
+		if (contentHeaderMap.isTextable()) {
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target), charset));
+			byte[] buff = new byte[len];
+			System.arraycopy(buffer, contentStart, buff, 0, len);
+			writer.write(new String(buff, charset));
+			writer.flush();
+			writer.close();
+			return true;
+		}
+		else {
+			FileOutputStream out = new FileOutputStream(target);
+			out.write(buffer, contentStart, len);
+			out.flush();
+			out.close();
+			return true;
+		}
 	}
 
 	/**
@@ -78,12 +106,14 @@ public class MemoryMultiPartData extends MultiPartFile {
 	 * @return byte[], bytes in the buffer
 	 */
 	public byte[] getContentBuffer() {
-		return this.buffer;
+		byte[] buff = new byte[len];
+		System.arraycopy(buffer, contentStart, buff, 0, len);
+		return buff;
 	}
 
 	@Override
 	public void close() throws IOException {
-		// ignore the method;
+		this.closed = true;
 	}
 
 	/**

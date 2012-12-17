@@ -27,15 +27,16 @@ package net.sourceforge.fastupload;
  */
 public class ProgressListener {
 	
-	private HttpFileUploadParser fileUploadParser;
+	private FastUploadParser parser;
 	
-	public ProgressListener(HttpFileUploadParser fileUploadParser) {
+ 
+	public ProgressListener(FastUploadParser parser) {
 		super();
-		this.fileUploadParser = fileUploadParser;
+		this.parser = parser;
 	}
-
+ 
 	public double progress() {
-		return fileUploadParser.getReadBytes() * 1.0 / fileUploadParser.getContentLength();
+		return parser.getReadBytes() * 1.0 / parser.getContentLength();
 	}
 
 }

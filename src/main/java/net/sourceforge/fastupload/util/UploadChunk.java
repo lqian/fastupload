@@ -1,22 +1,22 @@
 /*
  * 
-* Licensed to the Apache Software Foundation (ASF) under one
-* or more contributor license agreements.  See the NOTICE file
-* distributed with this work for additional information
-* regarding copyright ownership.  The ASF licenses this file
-* to you under the Apache License, Version 2.0 (the
-* "License"); you may not use this file except in compliance
-* with the License.  You may obtain a copy of the License at
-*
-*  http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied.  See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package net.sourceforge.fastupload.util;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ import net.sourceforge.fastupload.ContentHeaderMap;
 /**
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
- *
+ * 
  */
 public class UploadChunk {
 
@@ -54,25 +54,39 @@ public class UploadChunk {
 	 * end position of the boundary found
 	 */
 	private int boundEnd = -1;
-	
-	private int contentStart ;
-	
-	private BoundaryFinder boundayFinder;
-	
-	private BoundaryFinder subBoundayFinder;
-	
-	private final int PRE_SKIP = 40;
 
+	private int contentStart;
+
+	private BoundaryFinder boundayFinder;
+
+	private BoundaryFinder subBoundayFinder;
+
+	private final int PRE_SKIP = 40;
 	
 	
+
+	public UploadChunk(BoundaryFinder boundayFinder) {
+		super();
+		this.boundayFinder = boundayFinder;
+	}
+
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder) {
+		super();
+		this.pos = 0;
+		this.buffer = buffer;
+		this.length = buffer.length;
+		this.boundayFinder = boundayFinder;
+	}
+
 	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos) {
 		super();
 		this.pos = pos;
 		this.buffer = buffer;
+		this.length = buffer.length;
 		this.boundayFinder = boundayFinder;
 	}
-	
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos,  int length) {
+
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, int length) {
 		super();
 		this.pos = pos;
 		this.buffer = buffer;
@@ -92,13 +106,21 @@ public class UploadChunk {
 		this.pos = pos;
 		this.length = length;
 	}
-	
-	
 
-	public void append(byte[] buffer) {
-		this.append(buffer, 0, buffer.length);
+	/**
+	 * convenience method append whole bytes of buffer to current buffer
+	 * @param buff
+	 */
+	public void append(byte[] buff) {
+		this.append(buff, 0, buff.length);
 	}
-
+	
+	/**
+	 * insert bytes of delta from <em>pos</em> with length <em>len</em> before current buffer 
+	 * @param delta
+	 * @param pos
+	 * @param len
+	 */
 	public void insertDelta(byte[] delta, int pos, int len) {
 		ByteBuffer bb = ByteBuffer.allocate(this.length + len);
 		bb.put(delta, pos, len);
@@ -107,17 +129,45 @@ public class UploadChunk {
 		this.length = this.buffer.length;
 	}
 
-	public void append(byte[] buffer, int pos, int len) {
+	/**
+	 * append bytes of <em>buff</em> from <em>pos</em> with length <em>len</em> behind current buffer
+	 * @param buff
+	 * @param pos
+	 * @param len
+	 */
+	public void append(byte[] buff, int pos, int len) {
 		ByteBuffer bb = ByteBuffer.allocate(this.length + len);
 		bb.put(this.buffer, 0, this.length);
-		bb.put(buffer, 0, len);
+		bb.put(buff, 0, len);
 		this.buffer = bb.array();
 		this.length += len;
 	}
 
+	/**
+	 * convenience method set whole <em>buff</em> as current chunk buffer
+	 * @param buff
+	 */
+	public void setBuffer(byte[] buff) {
+		setBuffer(buff, 0, buff.length);
+	}
+	
+	/**
+	 * set current buffer with <em>buff</em> start at <em>pos</em> with length <em>len</em> as current chunk buffer
+	 * @param buff
+	 * @param pos
+	 * @param len
+	 */
+	public void setBuffer(byte[] buff, int pos, int len) {
+		this.buffer = buff;
+		this.pos = pos;
+		this.length = len;
+	}
+	
 	public int getBufferLength() {
 		return this.length;
 	}
+	
+	
 
 	/**
 	 * find a whole uploading data chunk in the current buffer. the
@@ -127,12 +177,23 @@ public class UploadChunk {
 	 * @return boolean if found
 	 */
 	public boolean find() {
-		boundStart = boundayFinder.indexOf(buffer, pos, length);
-		if (boundStart != -1)
-			boundEnd = boundayFinder.indexOf(buffer,  boundStart + boundayFinder.getBoundaryLength() + PRE_SKIP, length);
-		if (boundEnd != -1) {
-			pos = boundEnd;
-		}
+		boundStart = boundayFinder.indexOf(buffer, pos);
+		if (boundStart != -1) {
+			pos = boundStart + boundayFinder.getBoundaryLength() + PRE_SKIP;
+			if (pos >= length - 1) {// if out of bound index
+				boundEnd = -1;
+				return false;
+			}	
+			else {
+				boundEnd = boundayFinder.indexOf(buffer, pos);
+				if (boundEnd != -1) {
+					pos = boundEnd;
+					return true;
+				}
+				else 
+					return false;
+			}
+		} 
 		return boundStart >= 0 && boundEnd > 0;
 	}
 
@@ -191,25 +252,19 @@ public class UploadChunk {
 	 * from the <em>boundStart</em> position of buffer, read each line of
 	 * content header, put header section into a map if found a whole content
 	 * header successfully. meanwhile, the function return the end
-	 * <em>position</em> of content header in the buffer.
+	 * <em>contentStart</em> position of current boundary within current buffer.
 	 * 
 	 * @return position at the buffer if read a whole content header
 	 *         successfully, else return -1;
 	 */
 	public int readContentHeader() {
-//		this.contentHeaderMap = null;
-
-		int s = boundStart + boundayFinder.getBoundaryLength() + 2, p; //skip the boundary line
+		int s = boundStart + boundayFinder.getBoundaryLength() + 2, p;  
 		p = readLine(s); // read disposition
 		if (p == -1)
 			return p;
+		if (p - s < PRE_SKIP)
+			return -1;
 		HashMap<String, String> disposition = this.parseLine(this.substitute(buffer, s, p));
-
-//		s = p;
-//		p = readLine(s + 2);
-//		if (p == -1)
-//			return p;
-//		//HashMap<String, String> dispostion = this.parseLine(this.substitute(buffer, s, p));
 
 		contentHeaderMap = new ContentHeaderMap();
 		contentHeaderMap.putAll(disposition);
@@ -222,8 +277,9 @@ public class UploadChunk {
 			HashMap<String, String> type = this.parseLine(this.substitute(buffer, s, p));
 
 			contentHeaderMap.putAll(type);
-			
-			// TODO: perhaps, need to parse the content type to determine whether
+
+			// TODO: perhaps, need to parse the content type to determine
+			// whether
 			// read transfer encoding into header map.
 		}
 
@@ -271,9 +327,9 @@ public class UploadChunk {
 		return -1;
 	}
 
-
 	/**
 	 * create {@link BoundaryFinder} object for the sub-boundary bytes.
+	 * 
 	 * @param subBoundary
 	 */
 	public void setSubBoundary(byte[] subBoundary) {
@@ -309,5 +365,4 @@ public class UploadChunk {
 		return contentStart;
 	}
 
-	
 }

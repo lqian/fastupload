@@ -26,6 +26,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 /**
+ * The class represent a boundary data is binary file. It does not convert content of boundary with specific charset
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
@@ -34,11 +35,24 @@ public class MultiPartTextFile extends MultiPartDiskFile {
 
 	private Writer writer;
 
+	/**
+	 * constructor using default charset
+	 * 
+	 * @param name
+	 * @throws IOException
+	 */
 	public MultiPartTextFile(String name) throws IOException {
 		super(name);
-		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name)));
+		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name), charset));
 	}
 
+	/**
+	 * constructor using specified charset
+	 * 
+	 * @param name
+	 * @param charset
+	 * @throws IOException
+	 */
 	public MultiPartTextFile(String name, String charset) throws IOException {
 		super(name, charset);
 		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name), charset));
@@ -48,7 +62,7 @@ public class MultiPartTextFile extends MultiPartDiskFile {
 		super.append(buff, off, len);
 		byte[] wb = new byte[len];
 		System.arraycopy(buff, off, wb, 0, len);
-		writer.write(new String(wb, super.charset));
+		writer.write(new String(wb, charset));
 	}
 
 	public void close() throws IOException {

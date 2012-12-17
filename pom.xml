@@ -13,7 +13,7 @@
 	<url>http://sourceforge.net/projects/fastupload</url>
 	<name>Fast Upload</name>
 	<packaging>jar</packaging>
-	<description>the fastest java upload component in the area of form-based, described with RFC-1867</description>
+	<description>the fastest java upload component in the area of form-based, referenced RFC-1867</description>
 
 	<licenses>
 		<license>
@@ -67,7 +67,6 @@
 							<classifier>client</classifier>
 							<includes>
 								<include>${basedir}target/classes/net/sourceforge/fastupload/*</include>
-<!-- 								<include>${basedir}target/classes/org/apache/struts2/dispatcher/multipart/*</include> -->
 							</includes>
 						</configuration>
 					</execution>
@@ -122,17 +121,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-core</artifactId>
-			<version>2.1.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>2.5.6</version>
 		</dependency>
 	</dependencies>
 	

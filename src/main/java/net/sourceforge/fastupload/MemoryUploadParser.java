@@ -21,10 +21,12 @@
 package net.sourceforge.fastupload;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import net.sourceforge.fastupload.util.BoundaryFinder;
 import net.sourceforge.fastupload.util.UploadChunk;
 
 /**
@@ -32,41 +34,41 @@ import net.sourceforge.fastupload.util.UploadChunk;
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
-
-public class MemoryUploadParser {
-
-	private byte[] buffer;
-
-	private byte[] boundary;
-
-	private int off;
+public class MemoryUploadParser extends UploadParser {
 
 	private int length;
-
-	private FileFactory fileFactory;
 
 	private UploadChunk chunk;
 
 	private ContentHeaderMap contentHeaderMap;
 
-	public MemoryUploadParser(byte[] buffer, byte[] boundary, FileFactory fileFactory) {
-		super();
-		this.buffer = buffer;
-		this.boundary = boundary;
-		this.fileFactory = fileFactory;
-		this.off = 0;
-		this.length = buffer.length;
-		this.chunk = new UploadChunk(this.buffer, this.boundary, off, length);
+	public MemoryUploadParser(InputStream inputSteam, FileFactory fileFactory, byte[] boundary, int length) throws IOException {
+		super(inputSteam, fileFactory, boundary);
+		this.length = length;
+		init();
 	}
 
-	public MemoryUploadParser(byte[] buffer, byte[] boundary, int off, int length, FileFactory fileFactory) {
-		super();
-		this.buffer = buffer;
-		this.boundary = boundary;
-		this.off = off;
-		this.length = length;
-		this.fileFactory = fileFactory;
-		this.chunk = new UploadChunk(this.buffer, this.boundary, off, length);
+	/**
+	 * read all bytes from input stream, create a {@link UploadChunk} object
+	 * contains all bytes
+	 * 
+	 * @throws IOException
+	 */
+	private void init() throws IOException {
+		long s = System.currentTimeMillis();
+		byte[] stream = new byte[length];
+		//ByteBuffer byteBuffer = ByteBuffer.allocate(length);
+		byte[] b = new byte[8192];
+		int pos = 0;
+		for (int c = 0; c != -1; c = inputSteam.read(b)) {
+			System.arraycopy(b, 0, stream, pos, c);
+			pos +=c;
+		}
+		//byteBuffer.flip();
+		inputSteam.close();
+		System.out.format("read buffer cost: %d%n", System.currentTimeMillis() -s);
+		chunk = new UploadChunk(stream, new BoundaryFinder(boundary));
+
 	}
 
 	/**
@@ -90,31 +92,7 @@ public class MemoryUploadParser {
 				}
 			}
 		}
-
 		return multiparts;
-	}
-
-	/**
-	 * parse the bytes of <em>buffer</em>, and create a {@link MultiPartData}
-	 * object for every content within two <em>boundary</em> or
-	 * <em>sub-boundary</em>
-	 * 
-	 * @return name as key, MultiPartData object as value
-	 */
-	public HashMap<String, ? extends MultiPartFile> parseMap() throws IOException {
-		HashMap<String, MemoryMultiPartData> multiparts = new HashMap<String, MemoryMultiPartData>();
-		UploadChunk chunk = new UploadChunk(this.buffer, this.boundary, off, length);
-		while (chunk.find()) {
-			chunk.readContentHeader();
-			contentHeaderMap = chunk.getContentHeaderMap();
-			this.writeData(multiparts);
-		}
-		return multiparts;
-	}
-
-	private void writeData(HashMap<String, MemoryMultiPartData> multiparts) throws IOException {
-		MemoryMultiPartData mpd = this.doWriteData();
-		multiparts.put(mpd.getFieldName(), mpd);
 	}
 
 	/**
@@ -125,8 +103,8 @@ public class MemoryUploadParser {
 		multiparts.add(this.doWriteData());
 	}
 
-	private MemoryMultiPartData doWriteData() throws IOException {
-		MemoryMultiPartData mpd = this.contentHeaderMap.createMultiPartData(this.fileFactory);
+	private MultiPartFile doWriteData() throws IOException {
+		MultiPartFile mpd = fileFactory.createMultiPartFile(contentHeaderMap);
 		int s = chunk.getContentStart();
 		int len = chunk.getBoundEnd() - s - 2;
 		if (len > 0)
@@ -137,5 +115,4 @@ public class MemoryUploadParser {
 	private void writeMixedPartData(List<MultiPartFile> multiparts) {
 		// TODO maybe to do
 	}
-
 }
