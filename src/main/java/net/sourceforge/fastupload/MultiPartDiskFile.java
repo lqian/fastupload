@@ -33,7 +33,7 @@ import java.io.UnsupportedEncodingException;
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
-public abstract class MultiPartDiskFile extends MultiPartFile {
+public abstract class MultiPartDiskFile extends MultiPart {
 
 	
 	/**

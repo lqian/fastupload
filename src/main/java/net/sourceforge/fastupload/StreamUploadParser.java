@@ -34,27 +34,24 @@ import net.sourceforge.fastupload.util.UploadChunk;
  */
 public class StreamUploadParser extends UploadParser {
 
-	//private int bufferSize = 0x2000;
+	private int bufferSize = 0x2000;
 
-	//byte[] buffer = new byte[bufferSize];
-	//private byte[] delta;
-	//private int c;
 	private UploadChunk chunk;
 
-	private MultiPartFile multiPartFile;
+	private MultiPart multiPartFile;
 	private ContentHeaderMap contentMap;
 	private BoundaryFinder boundaryFinder;
 
 	public StreamUploadParser(InputStream inputSteam, FileFactory fileFactory, byte[] boundary) {
 		super(inputSteam, fileFactory, boundary);
 		this.boundaryFinder = new BoundaryFinder(boundary);
-		this.chunk = new UploadChunk(boundaryFinder);
+		this.chunk = new UploadChunk(boundaryFinder, fileFactory.getCharset());
 	}
 
-	public List<MultiPartFile> parseList() throws IOException {
+	public List<MultiPart> parseList() throws IOException {
 		byte[] delta = null;;
 		int c = 0;
-		byte[] buff = new byte[8192];
+		byte[] buff = new byte[bufferSize];
 		while ((c = inputSteam.read(buff)) != -1) {
 			readBytes += c;
 			if (delta != null) {
@@ -151,9 +148,6 @@ public class StreamUploadParser extends UploadParser {
 		return files;
 	}
 
-	public long getReadBytes() {
-		return readBytes;
-	}
 
 	private byte[] createDelta() {
 		int len = chunk.getBufferLength() - chunk.getBoundStart();
@@ -166,7 +160,7 @@ public class StreamUploadParser extends UploadParser {
 		contentMap = chunk.getContentHeaderMap();
 		if (fileFactory.acceptable(contentMap)) {
 			multiPartFile = fileFactory.createMultiPartFile(contentMap);
-
+			
 			int s = chunk.getContentStart();
 			int len = chunk.getBoundEnd() - s - 2;
 			multiPartFile.append(chunk.getBuffer(), s, len);

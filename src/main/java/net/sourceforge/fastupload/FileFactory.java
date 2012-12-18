@@ -55,7 +55,7 @@ public class FileFactory {
 	/**
 	 * max content length while parsing multipart/form-data input stream
 	 */
-	protected long maxContentLength;
+	private long maxContentLength;
 
 	/**
 	 * threshold of file length parsing a single file from multipart/form-data
@@ -65,7 +65,7 @@ public class FileFactory {
 
 	/**
 	 * if the property is true, the factory generates a universal random name
-	 * for current {@link MultiPartFile} object;
+	 * for current {@link MultiPart} object;
 	 */
 	protected boolean randomFileName = false;
 
@@ -76,14 +76,14 @@ public class FileFactory {
 	private HashSet<String> allowedTypesSet;
 
 	/**
-	 * return a NgFileFactory instance with default charset
+	 * return a FileFactory instance with default charset
 	 */
 	public static FileFactory getInstance() {
 		return getInstance(Charset.defaultCharset().name());
 	}
 
 	/**
-	 * return a NgFileFactory instance with specific charset
+	 * return a FileFactory instance with specific charset
 	 */
 	public static FileFactory getInstance(String charset) {
 		FileFactory ff = new FileFactory();
@@ -106,22 +106,22 @@ public class FileFactory {
 	}
 
 	/**
-	 * create an object extends {@link net.sourceforge.fastupload.MultiPartFile}
+	 * create an object extends {@link net.sourceforge.fastupload.MultiPart}
 	 * with a {@link ContentHeaderMap} parameter. It always create a
-	 * {@link net.sourceforge.fastupload.MemoryMultiPartFile} object when don't
+	 * {@link net.sourceforge.fastupload.MemoryMultiPart} object when don't
 	 * find the header is file.
 	 * 
 	 * @param header
 	 * @return
 	 * @throws IOException
 	 */
-	protected MultiPartFile createMultiPartFile(ContentHeaderMap header) throws IOException {
-		MultiPartFile mpf = null ;
+	protected MultiPart createMultiPartFile(ContentHeaderMap header) throws IOException {
+		MultiPart mpf = null ;
 
 		if (!header.isFile()) { // always MemoryMultiPartData if not a file
-			mpf = charset == null ? new MemoryMultiPartFile(header.getName()) : new MemoryMultiPartFile(header.getName(), charset);
+			mpf = charset == null ? new MemoryMultiPart(header.getName()) : new MemoryMultiPart(header.getName(), charset);
 		} else if (repository == null) { // memory file
-			mpf = charset == null ? new MemoryMultiPartFile(header.getName()) : new MemoryMultiPartFile(header.getName(), charset);
+			mpf = charset == null ? new MemoryMultiPart(header.getName()) : new MemoryMultiPart(header.getName(), charset);
 		} else { // disk file
 			if (header.isTextable()) {
 				mpf = charset == null ? new MultiPartTextFile(marshalFileName(header.getFileName())) : new MultiPartTextFile(
@@ -242,7 +242,6 @@ public class FileFactory {
 
 	public void setRepository(String repository) {
 		this.repository = repository;
-		//this.randomFileName = repository != null && repository.trim().length() > 0;
 	}
 
 	public long getMaxContentLength() {

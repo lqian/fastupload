@@ -67,7 +67,7 @@ public class FastUploadParserTest {
 	@Test
 	public void testNoRepoParse() throws IOException {
 		fastUploadParser = new FastUploadParser(request);
-		List<MultiPartFile> parts = fastUploadParser.parseList();
+		List<MultiPart> parts = fastUploadParser.parseList();
 		assertEquals(parts.size(), 3);
 	}
 
@@ -78,7 +78,7 @@ public class FastUploadParserTest {
 		
 		fastUploadParser = new FastUploadParser(request, fileFactory);
 
-		List<MultiPartFile> parts = fastUploadParser.parseList();
+		List<MultiPart> parts = fastUploadParser.parseList();
 		assertEquals(parts.size(), 3);
 
 		assertEquals(parts.get(0).getBytes(), 62057);

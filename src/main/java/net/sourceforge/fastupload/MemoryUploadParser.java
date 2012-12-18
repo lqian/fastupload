@@ -22,12 +22,12 @@ package net.sourceforge.fastupload;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.fastupload.util.BoundaryFinder;
 import net.sourceforge.fastupload.util.UploadChunk;
+import net.sourceforge.fastupload.MultiPart;
 
 /**
  * 
@@ -55,19 +55,15 @@ public class MemoryUploadParser extends UploadParser {
 	 * @throws IOException
 	 */
 	private void init() throws IOException {
-		long s = System.currentTimeMillis();
 		byte[] stream = new byte[length];
-		//ByteBuffer byteBuffer = ByteBuffer.allocate(length);
 		byte[] b = new byte[8192];
 		int pos = 0;
 		for (int c = 0; c != -1; c = inputSteam.read(b)) {
 			System.arraycopy(b, 0, stream, pos, c);
 			pos +=c;
 		}
-		//byteBuffer.flip();
 		inputSteam.close();
-		System.out.format("read buffer cost: %d%n", System.currentTimeMillis() -s);
-		chunk = new UploadChunk(stream, new BoundaryFinder(boundary));
+		chunk = new UploadChunk(stream, new BoundaryFinder(boundary), fileFactory.getCharset());
 
 	}
 
@@ -78,8 +74,8 @@ public class MemoryUploadParser extends UploadParser {
 	 * 
 	 * @return list of MultiPartData
 	 */
-	public List<MultiPartFile> parseList() throws IOException {
-		List<MultiPartFile> multiparts = new ArrayList<MultiPartFile>();
+	public List<MultiPart> parseList() throws IOException {
+		List<MultiPart> multiparts = new ArrayList<MultiPart>();
 
 		while (chunk.find()) {
 			chunk.readContentHeader();
@@ -99,12 +95,12 @@ public class MemoryUploadParser extends UploadParser {
 	 * 
 	 * @param multiparts
 	 */
-	private void writeData(List<MultiPartFile> multiparts) throws IOException {
+	private void writeData(List<MultiPart> multiparts) throws IOException {
 		multiparts.add(this.doWriteData());
 	}
 
-	private MultiPartFile doWriteData() throws IOException {
-		MultiPartFile mpd = fileFactory.createMultiPartFile(contentHeaderMap);
+	private MultiPart doWriteData() throws IOException {
+		MultiPart mpd = fileFactory.createMultiPartFile(contentHeaderMap);
 		int s = chunk.getContentStart();
 		int len = chunk.getBoundEnd() - s - 2;
 		if (len > 0)
@@ -112,7 +108,7 @@ public class MemoryUploadParser extends UploadParser {
 		return mpd;
 	}
 
-	private void writeMixedPartData(List<MultiPartFile> multiparts) {
+	private void writeMixedPartData(List<MultiPart> multiparts) {
 		// TODO maybe to do
 	}
 }

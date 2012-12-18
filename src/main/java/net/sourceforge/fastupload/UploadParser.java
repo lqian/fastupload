@@ -41,9 +41,9 @@ public abstract class UploadParser {
 
 	protected byte[] subBoundary;
 	
-	protected List<MultiPartFile> files = new ArrayList<MultiPartFile>();
+	protected List<MultiPart> files = new ArrayList<MultiPart>();
 	
-	protected long readBytes;
+	protected int readBytes;
 
 	public UploadParser(InputStream inputSteam, FileFactory fileFactory, byte[] boundary) {
 		super();
@@ -54,29 +54,29 @@ public abstract class UploadParser {
 
 	/**
 	 * define the method that read bytes of multipart/form-data input stream,
-	 * and parse {@link net.sourceforge.fastupload.MultiPartFile} from it.
+	 * and parse {@link net.sourceforge.fastupload.MultiPart} from it.
 	 * 
 	 * @return
 	 * @throws IOException
 	 */
-	public abstract List<MultiPartFile> parseList() throws IOException;
+	public abstract List<MultiPart> parseList() throws IOException;
 
 	/**
-	 * convert list of {@link net.sourceforge.fastupload.MultiPartFile} object
+	 * convert list of {@link net.sourceforge.fastupload.MultiPart} object
 	 * to a map, the key is input field name in the uploading form.
 	 * 
 	 * @return
 	 * @throws IOException
 	 */
-	public Map<String, MultiPartFile> parseMap() throws IOException {
-		Map<String, MultiPartFile> fileMap = new HashMap<String, MultiPartFile>();
-		for (MultiPartFile e : parseList()) {
+	public Map<String, MultiPart> parseMap() throws IOException {
+		Map<String, MultiPart> fileMap = new HashMap<String, MultiPart>();
+		for (MultiPart e : parseList()) {
 			fileMap.put(e.getFieldName(), e);
 		}
 		return fileMap;
 	}
 	
-	public long getReadBytes() {
+	public int getReadBytes() {
 		return readBytes;
 	}
 	

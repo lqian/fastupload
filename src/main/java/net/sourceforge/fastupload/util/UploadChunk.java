@@ -20,7 +20,9 @@
 package net.sourceforge.fastupload.util;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 import net.sourceforge.fastupload.ContentHeaderMap;
@@ -60,51 +62,58 @@ public class UploadChunk {
 	private BoundaryFinder boundayFinder;
 
 	private BoundaryFinder subBoundayFinder;
+	
+	private String charset = Charset.defaultCharset().name();
 
 	private final int PRE_SKIP = 40;
 	
 	
-
-	public UploadChunk(BoundaryFinder boundayFinder) {
+	public UploadChunk(BoundaryFinder boundayFinder, String charset) {
 		super();
 		this.boundayFinder = boundayFinder;
+		this.charset = charset;
 	}
 
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder) {
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, String charset) {
 		super();
 		this.pos = 0;
 		this.buffer = buffer;
 		this.length = buffer.length;
 		this.boundayFinder = boundayFinder;
+		this.charset = charset;
 	}
 
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos) {
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, String charset) {
 		super();
 		this.pos = pos;
 		this.buffer = buffer;
 		this.length = buffer.length;
 		this.boundayFinder = boundayFinder;
+		this.charset = charset;
 	}
 
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, int length) {
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, int length, String charset) {
 		super();
 		this.pos = pos;
 		this.buffer = buffer;
 		this.boundayFinder = boundayFinder;
 		this.length = length;
+		this.charset = charset;
 	}
 
-	public UploadChunk(byte[] buffer, byte[] boundary, int pos) {
+	public UploadChunk(byte[] buffer, byte[] boundary, int pos, String charset) {
 		this.boundayFinder = new BoundaryFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
+		this.charset = charset;
 	}
 
-	public UploadChunk(byte[] buffer, byte[] boundary, int pos, int length) {
+	public UploadChunk(byte[] buffer, byte[] boundary, int pos, int length, String charset) {
 		this.boundayFinder = new BoundaryFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
 		this.length = length;
+		this.charset = charset;
 	}
 
 	/**
@@ -302,7 +311,11 @@ public class UploadChunk {
 	}
 
 	private String substitute(byte[] buffer, int start, int end) {
-		return new String(subBuffer(buffer, start, end));
+		try {
+			return new String(subBuffer(buffer, start, end), charset);
+		} catch (UnsupportedEncodingException e) {
+			return new String(subBuffer(buffer, start, end));
+		}
 	}
 
 	private byte[] subBuffer(byte[] buffer, int start, int end) {

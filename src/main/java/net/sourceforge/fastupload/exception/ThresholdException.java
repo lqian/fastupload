@@ -20,7 +20,7 @@
 
 package net.sourceforge.fastupload.exception;
 
-import net.sourceforge.fastupload.MultiPartFile;
+import net.sourceforge.fastupload.MultiPart;
 
 /**
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
@@ -41,7 +41,7 @@ public class ThresholdException extends RuntimeException {
 		return new ThresholdException("ServletRequest inpustream length exceeds ParseThreshold");
 	}
 	
-	public static ThresholdException fileThresholdException(MultiPartFile multiPartFile) {
+	public static ThresholdException fileThresholdException(MultiPart multiPartFile) {
 		return new ThresholdException("a MultiPartFile length exceeds ParseThreshold: " + multiPartFile);
 	}
 }

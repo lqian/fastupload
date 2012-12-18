@@ -40,11 +40,11 @@ public class FileFactoryTest {
 
 	private ContentHeaderMap textHeader = new ContentHeaderMap();
 
-	private MultiPartFile part1;
+	private MultiPart part1;
 
-	private MultiPartFile part2;
+	private MultiPart part2;
 
-	private MultiPartFile part3;
+	private MultiPart part3;
 
 	@Before
 	public void setup() throws Exception {
@@ -65,13 +65,13 @@ public class FileFactoryTest {
 	@Test
 	public void testNoRepo() throws IOException {
 		part1 = fileFactory.createMultiPartFile(textHeader);
-		assertTrue(part1 instanceof MemoryMultiPartFile);
+		assertTrue(part1 instanceof MemoryMultiPart);
 
 		part2 = fileFactory.createMultiPartFile(textFileHeader);
-		assertTrue(part2 instanceof MemoryMultiPartFile);
+		assertTrue(part2 instanceof MemoryMultiPart);
 
 		part3 = fileFactory.createMultiPartFile(imageFileHeader);
-		assertTrue(part3 instanceof MemoryMultiPartFile);
+		assertTrue(part3 instanceof MemoryMultiPart);
 
 	}
 
@@ -81,7 +81,7 @@ public class FileFactoryTest {
 		fileFactory.setRepository(System.getProperty("user.home"));
 
 		part1 = fileFactory.createMultiPartFile(textHeader);
-		assertTrue(part1 instanceof MemoryMultiPartFile);
+		assertTrue(part1 instanceof MemoryMultiPart);
 
 		part2 = fileFactory.createMultiPartFile(textFileHeader);
 		assertTrue(part2 instanceof MultiPartTextFile);
