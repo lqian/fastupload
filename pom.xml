@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.fastupload</groupId>
 	<artifactId>fastupload-core</artifactId>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.5.2</version>
 	<url>http://sourceforge.net/projects/fastupload</url>
 	<name>Fast Upload</name>
 	<packaging>jar</packaging>
