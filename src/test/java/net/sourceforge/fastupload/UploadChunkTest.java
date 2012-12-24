@@ -18,12 +18,11 @@
  */
 package net.sourceforge.fastupload;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-import net.sourceforge.fastupload.util.BoundaryFinder;
 import net.sourceforge.fastupload.util.UploadChunk;
 
 import org.junit.Before;
@@ -37,11 +36,9 @@ public class UploadChunkTest {
 	
 	private UploadChunk uploadChunk;
 	
-	private BoundaryFinder boundaryFinder;
-	
 	@Before
 	public void setUp() {
-		uploadChunk = new UploadChunk(boundaryFinder, Charset.defaultCharset().name());
+		uploadChunk = new UploadChunk(null, Charset.defaultCharset().name());
 	}
 	
 	@Test

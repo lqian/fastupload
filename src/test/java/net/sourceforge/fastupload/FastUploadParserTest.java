@@ -50,7 +50,7 @@ public class FastUploadParserTest {
 
 	@Before
 	public void setup() throws IOException {
-		inputStream = FastUploadParserTest.class.getResourceAsStream("uploading.data");
+		inputStream = FastUploadParserTest.class.getResourceAsStream("/uploading.data");
 		request = new SimpleHttpServletRequestMock(inputStream);
 		
 		File dir = new File(repository);
