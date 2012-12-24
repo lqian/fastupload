@@ -27,13 +27,20 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 
 /**
+ * 
+ * A factory that indicate which concrete sub class of {@link MultiPart} to be created. Also it provides single part <em>threshold</em> limitation
+ * , <em>maxContentLength</em> limitation, <em>content type and file extension name</em> filter for form-based upload
+ * 
+ * @see net.sourceforge.fastupload.FastUploadParser
+ * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
+ * @since 0.5.1
  */
 public class FileFactory {
 
 	/**
-	 * charset name for NgFileFactory, initial as JVM default charset name
+	 * charset name for FileFactory, initial as JVM default charset name
 	 */
 	protected String charset = Charset.defaultCharset().name();
 
@@ -74,6 +81,11 @@ public class FileFactory {
 	private HashSet<String> allowedExtensionsSet;
 
 	private HashSet<String> allowedTypesSet;
+	
+	/**
+	 * charset encoding of ServletRequest
+	 */
+	private String encoding;
 
 	/**
 	 * return a FileFactory instance with default charset
@@ -124,15 +136,20 @@ public class FileFactory {
 			mpf = charset == null ? new MemoryMultiPart(header.getName()) : new MemoryMultiPart(header.getName(), charset);
 		} else { // disk file
 			if (header.isTextable()) {
-				mpf = charset == null ? new MultiPartTextFile(marshalFileName(header.getFileName())) : new MultiPartTextFile(
+				MultiPartTextFile mptf = charset == null ? new MultiPartTextFile(marshalFileName(header.getFileName())) : new MultiPartTextFile(
 						marshalFileName(header.getFileName()), charset);
+				mptf.setEncoding(encoding);
+				mpf = mptf;
 			} else {
 				mpf = charset == null ? new MultiPartBinaryFile(marshalFileName(header.getFileName())) : new MultiPartBinaryFile(
 						marshalFileName(header.getFileName()), charset);
 			}
 		}
-		if (mpf != null)
+		
+		if (mpf != null) {
 			mpf.setContentHeaderMap(header);
+			mpf.setThreshold(threshold);
+		}
 		return mpf;
 	}
 
@@ -148,7 +165,7 @@ public class FileFactory {
 	}
 
 	/**
-	 * check whether a given {@link ContentHeaderMap} object is acsceptable
+	 * check whether a given {@link ContentHeaderMap} object is acceptable
 	 * 
 	 * @param contentHeaderMap
 	 *            ContentHeaderMap
@@ -271,6 +288,14 @@ public class FileFactory {
 
 	public void setCharset(String charset) {
 		this.charset = charset;
+	}
+
+	public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 
 	public void setRandomFileName(boolean randomFileName) {

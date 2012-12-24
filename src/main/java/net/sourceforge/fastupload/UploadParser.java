@@ -32,6 +32,11 @@ import java.util.Map;
  * 
  */
 public abstract class UploadParser {
+	
+	/**
+	 * charset encoding of {@link HttpServletRequest}
+	 */
+	protected String encoding;
 
 	protected InputStream inputSteam;
 

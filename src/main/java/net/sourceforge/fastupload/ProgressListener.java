@@ -21,6 +21,7 @@
 package net.sourceforge.fastupload;
 
 /**
+ * progress listener of {@link FastUploadParser} parsing bytes from {@link ServletInputSteam}
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  *

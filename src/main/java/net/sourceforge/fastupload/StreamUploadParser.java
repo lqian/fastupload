@@ -28,6 +28,9 @@ import net.sourceforge.fastupload.util.BoundaryFinder;
 import net.sourceforge.fastupload.util.UploadChunk;
 
 /**
+ * A concrete class of {@link UploadParser} that override <em> parseList() </em>
+ * function. It parse the buffer that read <em>0x2000</em> bytes from
+ * {@link ServletInputStream} , till all bytes was read and parsed.
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
@@ -39,28 +42,31 @@ public class StreamUploadParser extends UploadParser {
 	private UploadChunk chunk;
 
 	private MultiPart multiPartFile;
+
 	private ContentHeaderMap contentMap;
+
 	private BoundaryFinder boundaryFinder;
 
 	public StreamUploadParser(InputStream inputSteam, FileFactory fileFactory, byte[] boundary) {
 		super(inputSteam, fileFactory, boundary);
 		this.boundaryFinder = new BoundaryFinder(boundary);
-		this.chunk = new UploadChunk(boundaryFinder, fileFactory.getCharset());
+		this.chunk = new UploadChunk(boundaryFinder, fileFactory.getEncoding());
 	}
 
+	@Override
 	public List<MultiPart> parseList() throws IOException {
-		byte[] delta = null;;
+		byte[] delta = null;
 		int c = 0;
 		byte[] buff = new byte[bufferSize];
 		while ((c = inputSteam.read(buff)) != -1) {
 			readBytes += c;
 			if (delta != null) {
 				chunk.setBuffer(delta);
-				//chunk = new UploadChunk(delta, boundaryFinder, 0);
+				// chunk = new UploadChunk(delta, boundaryFinder, 0);
 				chunk.append(buff, 0, c);
 				delta = null;
 			} else {
-				//chunk = new UploadChunk(buffer, boundaryFinder, 0, c);
+				// chunk = new UploadChunk(buffer, boundaryFinder, 0, c);
 				chunk.setBuffer(buff, 0, c);
 			}
 			while (chunk.find()) {
@@ -91,19 +97,18 @@ public class StreamUploadParser extends UploadParser {
 			 * else parse the content header to create a {@link MultiPartFile}
 			 * object
 			 */
-			if (chunk.getBoundStart() == -1 && chunk.getBoundEnd() == -1
-					&& multiPartFile != null && !multiPartFile.isClosed()) {
+			if (chunk.getBoundStart() == -1 && chunk.getBoundEnd() == -1 && multiPartFile != null && !multiPartFile.isClosed()) {
 				multiPartFile.append(chunk.getBuffer(), 0, chunk.getBufferLength());
 			} else if (chunk.getBoundStart() >= 0 && chunk.getBoundEnd() == -1) {
 				if (multiPartFile != null && !multiPartFile.isClosed()) {
-					multiPartFile.append(chunk.getBuffer(), 0, chunk.getBoundStart() - 2 );
+					multiPartFile.append(chunk.getBuffer(), 0, chunk.getBoundStart() - 2);
 					multiPartFile.close();
 					files.add(multiPartFile);
 				}
-				
+
 				// append to delta?
 				int ct = chunk.readContentHeader();
-				if (ct != -1) {  // has whole content header
+				if (ct != -1) { // has whole content header
 					contentMap = chunk.getContentHeaderMap();
 					if (fileFactory.acceptable(contentMap)) {
 						if (contentMap.hasMultiPartMixed()) {
@@ -121,7 +126,7 @@ public class StreamUploadParser extends UploadParser {
 										if (fileFactory.acceptable(contentMap)) {
 											multiPartFile = fileFactory.createMultiPartFile(contentMap);
 											if (multiPartFile != null) {
-												multiPartFile.append( chunk.getBuffer(), ct , chunk.getBufferLength() - ct);
+												multiPartFile.append(chunk.getBuffer(), ct, chunk.getBufferLength() - ct);
 											}
 										}
 									}
@@ -130,24 +135,25 @@ public class StreamUploadParser extends UploadParser {
 								delta = createDelta();
 							}
 						} else {
-							// create a multipartfile when not multipart/mixed content type
+							// create a multipartfile when not multipart/mixed
+							// content type
 							multiPartFile = fileFactory.createMultiPartFile(contentMap);
 							if (multiPartFile != null && !multiPartFile.isClosed()) {
-								multiPartFile.append(chunk.getBuffer(), ct, chunk.getBufferLength() - ct );
+								multiPartFile.append(chunk.getBuffer(), ct, chunk.getBufferLength() - ct);
 							}
 						}
 					}
 				} else {
-					delta = createDelta();  //create delta buffer as first part of buffer in next loop
+					delta = createDelta(); // create delta buffer as first part
+											// of buffer in next loop
 				}
 			}
 		}
-		
+
 		inputSteam.close();
-		
+
 		return files;
 	}
-
 
 	private byte[] createDelta() {
 		int len = chunk.getBufferLength() - chunk.getBoundStart();
@@ -160,7 +166,7 @@ public class StreamUploadParser extends UploadParser {
 		contentMap = chunk.getContentHeaderMap();
 		if (fileFactory.acceptable(contentMap)) {
 			multiPartFile = fileFactory.createMultiPartFile(contentMap);
-			
+
 			int s = chunk.getContentStart();
 			int len = chunk.getBoundEnd() - s - 2;
 			multiPartFile.append(chunk.getBuffer(), s, len);

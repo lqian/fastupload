@@ -134,6 +134,7 @@ import net.sourceforge.fastupload.exception.ThresholdException;
  * 
  * <li><code>fileFactory.setThreshold(200000);</code> limit parse content length of a part excludes headers, does not exceed the threshold. throw a runtime type of {@link ThresholdException} 
  * <li><code>fileFactory.setMaxContentLength(2000000);</code> limit parse a content length of current multipart request, does not exceed the value. throw a runtime type of {@link ThresholdException}
+ *
  * @since 0.5.1
  * 
  * @see net.sourceforge.fastupload.FileFactory
@@ -144,10 +145,10 @@ import net.sourceforge.fastupload.exception.ThresholdException;
  */
 public class FastUploadParser {
 
-	protected final String _ENCTYPE = "multipart/form-data";
-	protected final String _HEADER_CONTENT_TYPE = "Content-type";
-	protected final String _HEADER_CONTENT_LENGTH = "Content-Length";
-	protected final String _BOUNDARY_PREFIX = "--";
+	private final String _ENCTYPE = "multipart/form-data";
+	private final String _HEADER_CONTENT_TYPE = "Content-type";
+	private final String _BOUNDARY_PREFIX = "--";
+	private final String _DEFALT_ENCODING = "iso-8859-1";
 
 	private byte[] boundary;
 
@@ -202,22 +203,23 @@ public class FastUploadParser {
 	}
 
 	/**
-	 * parse enctype, content length and boundary
+	 * parse enctype, content length, boundary and encoding
 	 * 
 	 * @throws IOException
 	 */
 	private void init() throws IOException {
-
-		System.out.println(request.getCharacterEncoding());
-		request.setCharacterEncoding(fileFactory.getCharset());
-
 		this.parseEnctype();
 		this.parseContentLength();
+		
+		fileFactory.setEncoding(request.getCharacterEncoding() == null ? _DEFALT_ENCODING : request.getCharacterEncoding() );
+		
 		if (fileFactory.repository == null || fileFactory.repository.trim().equals("")) {
 			uploadParser = new MemoryUploadParser(request.getInputStream(), fileFactory, boundary, contentLength);
 		} else {
 			uploadParser = new StreamUploadParser(request.getInputStream(), fileFactory, boundary);
 		}
+		uploadParser.encoding = fileFactory.getEncoding() ;
+		
 	}
 
 	/**

@@ -24,8 +24,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * 
+ * A concrete class of {@link MultiPartDiskFile}.
  * The class does not convert content of boundary of multipart/form input
- * stream, write bytes of it into a {@link FileOutputStream}
+ * stream, write bytes of it into a {@link FileOutputStream} because multipart content is binary type.
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 

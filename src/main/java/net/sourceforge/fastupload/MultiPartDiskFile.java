@@ -27,13 +27,19 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
- * the class provides write binary data of multipart/form-data boundary into a
+ * A abstract sub class of {@link MultiPart}.
+ * The class provides write data of multipart/form-data boundary into a
  * disk file. just convert <em>file name</em> with specified charset
  * 
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
  * 
  */
 public abstract class MultiPartDiskFile extends MultiPart {
+
+	/**
+	 * 
+	 */
+	protected String encoding;
 
 	
 	/**
@@ -55,8 +61,8 @@ public abstract class MultiPartDiskFile extends MultiPart {
 
 	@Override
 	public byte[] getContentBuffer() {
-		// not support the operation
-		throw new RuntimeException("not a closed file, open denied");
+		// not support the operation as it's file type
+		throw new RuntimeException("not support the operation as it's file type");
 	}
 
 	/**

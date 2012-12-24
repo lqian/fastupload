@@ -19,10 +19,8 @@
  */
 package net.sourceforge.fastupload.util;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 
 import net.sourceforge.fastupload.ContentHeaderMap;
@@ -34,86 +32,112 @@ import net.sourceforge.fastupload.ContentHeaderMap;
  */
 public class UploadChunk {
 
-	public static final byte[] _CRLF = { 0X0D, 0X0A };
-
-	/*
+	/**
 	 * current position of the buffer parsing
 	 */
 	private int pos;
 
+	/**
+	 * byte buffer to be search
+	 */
+	private byte[] buffer;
+	
+	/**
+	 * real bytes length of current buffer
+	 */
 	private int length;
 
-	private byte[] buffer;
-
+	/**
+	 * header of multipart  
+	 */
 	private ContentHeaderMap contentHeaderMap;
 
-	/*
+	/**
 	 * start position of the boundary found
 	 */
 	private int boundStart = -1;
 
-	/*
+	/**
 	 * end position of the boundary found
 	 */
 	private int boundEnd = -1;
 
+	/**
+	 * start position of content in a multipart
+	 */
 	private int contentStart;
 
+	/**
+	 * boundary finder
+	 */
 	private BoundaryFinder boundayFinder;
 
+	/**
+	 * sub boundary finder that created if is mixed multipart 
+	 */
 	private BoundaryFinder subBoundayFinder;
 	
-	private String charset = Charset.defaultCharset().name();
+	/**
+	 * encoding of ServletRequest, default is <em>ISO-8859-1</em>
+	 */
+	private String encoding = "ISO-8859-1";
 
-	private final int PRE_SKIP = 40;
+	/**
+	 * skip bytes when search next boundary
+	 */
+	private int PRE_SKIP = 40;
 	
-	
-	public UploadChunk(BoundaryFinder boundayFinder, String charset) {
+	public UploadChunk(BoundaryFinder boundayFinder) {
 		super();
 		this.boundayFinder = boundayFinder;
-		this.charset = charset;
+	}
+	
+	public UploadChunk(BoundaryFinder boundayFinder, String encoding) {
+		super();
+		this.boundayFinder = boundayFinder;
+		this.encoding = encoding;
 	}
 
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, String charset) {
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, String encoding) {
 		super();
 		this.pos = 0;
 		this.buffer = buffer;
 		this.length = buffer.length;
 		this.boundayFinder = boundayFinder;
-		this.charset = charset;
+		this.encoding = encoding;
 	}
 
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, String charset) {
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, String encoding) {
 		super();
 		this.pos = pos;
 		this.buffer = buffer;
 		this.length = buffer.length;
 		this.boundayFinder = boundayFinder;
-		this.charset = charset;
+		this.encoding = encoding;
 	}
 
-	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, int length, String charset) {
+	public UploadChunk(byte[] buffer, BoundaryFinder boundayFinder, int pos, int length, String encoding) {
 		super();
 		this.pos = pos;
 		this.buffer = buffer;
 		this.boundayFinder = boundayFinder;
 		this.length = length;
-		this.charset = charset;
+		this.encoding = encoding;
 	}
 
-	public UploadChunk(byte[] buffer, byte[] boundary, int pos, String charset) {
+	public UploadChunk(byte[] buffer, byte[] boundary, int pos, String encoding) {
 		this.boundayFinder = new BoundaryFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
-		this.charset = charset;
+		this.encoding = encoding;
 	}
 
-	public UploadChunk(byte[] buffer, byte[] boundary, int pos, int length, String charset) {
+	public UploadChunk(byte[] buffer, byte[] boundary, int pos, int length, String encoding) {
 		this.boundayFinder = new BoundaryFinder(boundary);
 		this.buffer = buffer;
 		this.pos = pos;
 		this.length = length;
-		this.charset = charset;
+		this.encoding = encoding;
 	}
 
 	/**
@@ -177,7 +201,6 @@ public class UploadChunk {
 	}
 	
 	
-
 	/**
 	 * find a whole uploading data chunk in the current buffer. the
 	 * <em>start</em> and <em>end</em> variable indicates the chunk start
@@ -273,7 +296,7 @@ public class UploadChunk {
 			return p;
 		if (p - s < PRE_SKIP)
 			return -1;
-		HashMap<String, String> disposition = this.parseLine(this.substitute(buffer, s, p));
+		HashMap<String, String> disposition = parseLine(substitute(buffer, s, p, encoding));
 
 		contentHeaderMap = new ContentHeaderMap();
 		contentHeaderMap.putAll(disposition);
@@ -297,32 +320,33 @@ public class UploadChunk {
 	}
 
 	/**
-	 * from the boundary start position, substitute the buffer for content
-	 * header in the current chunk that found in the buffer
-	 * 
-	 * @return a new string contains contents.
-	 * @throws IOException
+	 * substitute <em>len</em> bytes from <em>start</em> and convert <code>String</code> with the charset specfied
+	 * @param buffer
+	 * @param start
+	 * @param end
+	 * @param charset
+	 * @return
 	 */
-	public String substituteContent() {
-		int s = readLine(boundStart + 2);
-		int e = readLine(s + 2);
-		e = readLine(e + 2);
-		return substitute(buffer, s + 2, e);
-	}
-
-	private String substitute(byte[] buffer, int start, int end) {
+	private String substitute(byte[] buffer, int start, int end, String charset) {
 		try {
-			return new String(subBuffer(buffer, start, end), charset);
+			return new String(buffer, start, end - start, charset);
 		} catch (UnsupportedEncodingException e) {
-			return new String(subBuffer(buffer, start, end));
+			return new String(buffer, start, end - start);
 		}
 	}
-
-	private byte[] subBuffer(byte[] buffer, int start, int end) {
-		byte[] bs = new byte[end - start];
-		System.arraycopy(buffer, start, bs, 0, bs.length);
-		return bs;
+	
+	/**
+	 * substitute <em>len</em> bytes from <em>start</em> and convert <code>String</code> with the default charset
+	 * @param buffer
+	 * @param start
+	 * @param end
+	 * @param encoding
+	 * @return
+	 */
+	private String substitute(byte[] buffer, int start, int end) {
+		return new String(buffer, start, end - start);
 	}
+
 
 	/**
 	 * read the current buffer from <em>pos</em>,

@@ -30,16 +30,31 @@ import net.sourceforge.fastupload.util.UploadChunk;
 import net.sourceforge.fastupload.MultiPart;
 
 /**
+ * Concrete class of {@link UploadParser} that implements main
+ * <em>parseList()</em> function that return <em>List&lt;MultiPart&gt;</em> The
+ * class read all bytes from {@link ServletInputStream} before parse it, which
+ * behavior is not as same as {@link StreamUploadParser}
  * 
+ * @see net.sourceforge.fastupload.FastUploadParser
+ * @see net.sourceforge.fastupload.StreamUploadParser
  * @author <a href="mailto:link.qian@yahoo.com">Link Qian</a>
- * 
+ * @since 0.5.1
  */
 public class MemoryUploadParser extends UploadParser {
 
+	/**
+	 * total length of bytes to be parse
+	 */
 	private int length;
 
+	/**
+	 * UploadChunk object to be create, as to find {@link MultiPart}
+	 */
 	private UploadChunk chunk;
 
+	/**
+	 * temporary ContentHeaderMap in the parsing process
+	 */
 	private ContentHeaderMap contentHeaderMap;
 
 	public MemoryUploadParser(InputStream inputSteam, FileFactory fileFactory, byte[] boundary, int length) throws IOException {
@@ -60,11 +75,9 @@ public class MemoryUploadParser extends UploadParser {
 		int pos = 0;
 		for (int c = 0; c != -1; c = inputSteam.read(b)) {
 			System.arraycopy(b, 0, stream, pos, c);
-			pos +=c;
+			pos += c;
 		}
-		inputSteam.close();
 		chunk = new UploadChunk(stream, new BoundaryFinder(boundary), fileFactory.getCharset());
-
 	}
 
 	/**
