@@ -20,12 +20,10 @@
 
 package net.sourceforge.fastupload;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -79,14 +77,17 @@ public class MemoryMultiPart extends MultiPart {
 		if (this.getBytes() == 0)
 			return false;
 
-		// TODO convert charset if it's text format
 		if (contentHeaderMap.isTextable()) {
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target), charset));
-			byte[] buff = new byte[len];
-			System.arraycopy(buffer, contentStart, buff, 0, len);
-			writer.write(new String(buff, charset));
-			writer.flush();
-			writer.close();
+			FileOutputStream out = new FileOutputStream(target);
+			String encoding = contentHeaderMap.getEncoding();
+			if (encoding.equalsIgnoreCase(charset)) {
+				out.write(buffer, contentStart, len);
+			}
+			else {
+				out.write(new String(buffer, contentStart, len, encoding).getBytes(charset));
+			}
+			out.flush();
+			out.close();
 			return true;
 		}
 		else {

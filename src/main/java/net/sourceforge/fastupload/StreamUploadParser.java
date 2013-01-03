@@ -62,11 +62,9 @@ public class StreamUploadParser extends UploadParser {
 			readBytes += c;
 			if (delta != null) {
 				chunk.setBuffer(delta);
-				// chunk = new UploadChunk(delta, boundaryFinder, 0);
 				chunk.append(buff, 0, c);
 				delta = null;
 			} else {
-				// chunk = new UploadChunk(buffer, boundaryFinder, 0, c);
 				chunk.setBuffer(buff, 0, c);
 			}
 			while (chunk.find()) {

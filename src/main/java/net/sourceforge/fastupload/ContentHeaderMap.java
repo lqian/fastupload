@@ -51,9 +51,15 @@ public class ContentHeaderMap extends HashMap<String, String> {
 	private static final String _FILE_NAME_KEY = "filename";
 	private static final String _NAME_KEY = "name";
 	private static final String _CONTENT_TYPE_KEY = "Content-Type";
+	static final String _CONTENT_ENCODING = "Encoding";
 	private static final String _TEXT_CONTENT_TYPE_PREFIX = "text/";
 	private static final String _MULTIPART_MIXED_VALUE = "multipart/mixed";
 	private static final String _BOUNDARY_KEY = "boundary";
+	
+	
+	public ContentHeaderMap(String encoding) {
+		put(_CONTENT_ENCODING, encoding);
+	}
 
 	/**
 	 * 
@@ -130,5 +136,19 @@ public class ContentHeaderMap extends HashMap<String, String> {
 	public String getContentType() {
 		return this.get(_CONTENT_TYPE_KEY);
 	}
+	
+	/**
+	 * get <em>encoding</em> key from current <em>Map</em>
+	 * @return <em>ISO-8859-1</em> if not found, else return the value of the key
+	 */
+	public String getEncoding() {
+		String encoding = get(_CONTENT_ENCODING);
+		return encoding == null ? "ISO-8859-1" : encoding;
+	}
+	
+	
+//	public void setEncoding(String encoding) {
+//		put(_CONTENT_ENCODING, encoding);
+//	}
 
 }

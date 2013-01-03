@@ -33,11 +33,11 @@ public class FileFactoryTest {
 
 	private FileFactory fileFactory = FileFactory.getInstance();
 
-	private ContentHeaderMap textFileHeader = new ContentHeaderMap();
+	private ContentHeaderMap textFileHeader = new ContentHeaderMap("iso-88591-1");
 
-	private ContentHeaderMap imageFileHeader = new ContentHeaderMap();
+	private ContentHeaderMap imageFileHeader = new ContentHeaderMap("iso-88591-1");
 
-	private ContentHeaderMap textHeader = new ContentHeaderMap();
+	private ContentHeaderMap textHeader = new ContentHeaderMap("iso-88591-1");
 
 	private MultiPart part1;
 

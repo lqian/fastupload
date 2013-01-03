@@ -298,9 +298,8 @@ public class UploadChunk {
 			return -1;
 		HashMap<String, String> disposition = parseLine(substitute(buffer, s, p, encoding));
 
-		contentHeaderMap = new ContentHeaderMap();
+		contentHeaderMap = new ContentHeaderMap(encoding);
 		contentHeaderMap.putAll(disposition);
-
 		if (contentHeaderMap.isFile()) {
 			s = p;
 			p = readLine(s + 2);
