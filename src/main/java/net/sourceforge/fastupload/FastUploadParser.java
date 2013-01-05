@@ -135,6 +135,10 @@ import net.sourceforge.fastupload.exception.ThresholdException;
  * <li><code>fileFactory.setThreshold(200000);</code> limit parse content length of a part excludes headers, does not exceed the threshold. throw a runtime type of {@link ThresholdException} 
  * <li><code>fileFactory.setMaxContentLength(2000000);</code> limit parse a content length of current multipart request, does not exceed the value. throw a runtime type of {@link ThresholdException}
  *
+ *<li>Setup a {@link ProgressListener} to know  parsing progress </li>
+ *<code>ProgressListener listener = new ProgressListener(fastUploadParser);
+ *listener.progress();
+ *</code>
  * @since 0.5.1
  * 
  * @see net.sourceforge.fastupload.FileFactory
@@ -159,10 +163,6 @@ public class FastUploadParser {
 	 */
 	private int contentLength;
 
-	/**
-	 * progress listener
-	 */
-	private ProgressListener progressListener;
 
 	/**
 	 * UploadParser that parse ServletInputStream indeed, and return parsing
@@ -274,21 +274,6 @@ public class FastUploadParser {
 
 	public long getContentLength() {
 		return contentLength;
-	}
-
-	/**
-	 * @return the progressListener
-	 */
-	public ProgressListener getProgressListener() {
-		return progressListener;
-	}
-
-	/**
-	 * @param progressListener
-	 *            the progressListener to set
-	 */
-	public void setProgressListener(ProgressListener progressListener) {
-		this.progressListener = progressListener;
 	}
 
 	/**
