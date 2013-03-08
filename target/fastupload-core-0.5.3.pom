@@ -1,0 +1,127 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sf.fastupload</groupId>
+	<artifactId>fastupload-core</artifactId>
+	<version>0.5.3</version>
+	<url>http://sourceforge.net/projects/fastupload</url>
+	<name>Fast Upload</name>
+	<packaging>jar</packaging>
+	<description>the fastest java upload component in the area of form-based, referenced RFC-1867</description>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+<!-- 	<scm> -->
+<!-- 		<connection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</connection> -->
+<!-- 		<developerConnection>scm:svn:https://svn.code.sf.net/p/fastupload/code-0/trunk/</developerConnection> -->
+<!-- 		<url>https://svn.code.sf.net/p/fastupload/code-0/trunk/</url> -->
+<!-- 	</scm> -->
+
+	<!-- use git for source code repository management -->
+	<scm>
+		<url>scm:git:git://git.code.sf.net/p/fastupload/code</url>
+		<developerConnection>scm:git:ssh://linkidata@git.code.sf.net/p/fastupload/code</developerConnection>
+		<connection>git@git://git.code.sf.net/p/fastupload/code</connection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>3505569</id>
+			<name>Link Qian</name>
+			<email>Link.Qian@yahoo.com</email>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.6</java.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- jar packaging plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+
+				<executions>
+					<!-- package class as jar file -->
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>client</classifier>
+							<includes>
+								<include>${basedir}target/classes/net/sourceforge/fastupload/*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- specified the java compile level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+
+			</plugin>
+
+			<!-- maven source packaging plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+	</dependencies>
+	
+</project>
